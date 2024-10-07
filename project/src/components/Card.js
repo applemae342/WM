@@ -1,14 +1,14 @@
 import React from "react";
 
 const Card = ({ title, content }) => {
-  return (
-    <div className="card w-[400px] h-[300px] p-10 m-10 rounded">
-      <div className="card-content">
-        <h2 className="text-xl font-semibold mb-4">{title}</h2>
-        <p className="mb-4">{content}</p>
-      </div>
-    </div>
-  );
+    return (
+        <div className="w-full max-w-sm mx-auto bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden">
+            <div className="p-6">
+                <h2 className="text-2xl font-semibold mb-4 text-center">{title}</h2>
+                <p className="text-base text-gray-700 text-center">{content}</p>
+            </div>
+        </div>
+    );
 };
 
 export default Card;
