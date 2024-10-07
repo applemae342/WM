@@ -12,7 +12,7 @@ const GettingStarted = ({ onStartClick }) => {
                 onClick={onStartClick}
             >
                 Start
-            </button>
+            </button>   
         </div>
     );
 };
