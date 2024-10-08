@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { BellIcon, ElipsisIcon } from "../heroIcons/Icons";
 import Modal from "../Modal";
-import MapView from "../MapView";
 
 const ResidentsHomeDashboard = () => {
     const [isModalOpen, setModalOpen] = useState(false);
@@ -53,12 +52,7 @@ const ResidentsHomeDashboard = () => {
                 )}
             </Modal>
 
-            {/* Map View */}
-            <div className="mt-10">
-                <div>
-                    <MapView />
-                </div>
-            </div>
+           
         </div>
     );
 };

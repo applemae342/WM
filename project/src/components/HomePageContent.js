@@ -17,6 +17,12 @@ const HomePageContent = () => {
                 >
                     Get Started
                 </Link>
+                <Link
+                    href="/sign_in_page"
+                    className="bg-blue-500 text-white py-3 px-8 rounded-lg font-semibold text-lg hover:bg-blue-700 hover:text-white focus:outline-none transition duration-300 ease-in-out inline-block"
+                >
+                    Sign In
+                </Link>
             </div>
 
             {/* Image Section */}

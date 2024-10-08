@@ -1,5 +1,4 @@
 import React from "react";
-import MapView from "../MapView";
 
 const ResidentsLocationTrackingDashboard = () => {
     return (
@@ -7,9 +6,7 @@ const ResidentsLocationTrackingDashboard = () => {
             <div>
                 <p>Track where is the collector right now.....</p>
             </div>
-            <div className="mt-10">
-                <MapView />
-            </div>
+          
         </div>
     );
 };

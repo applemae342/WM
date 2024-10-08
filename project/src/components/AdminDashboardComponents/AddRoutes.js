@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CollectionHistory from "../CollectionHistory";
 import { AddIcon, PenIcon, TrashIcon } from "../heroIcons/Icons";
 
@@ -6,47 +6,106 @@ const DashboardCollectionRoutes = () => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [newRoute, setNewRoute] = useState("");
-    const [routes, setRoutes] = useState([{ id: 1, name: "Sample Route", isEditing: false }]); // Sample data
+    const [routes, setRoutes] = useState([]);
     const [routeToDelete, setRouteToDelete] = useState(null);
+    const [editingRoute, setEditingRoute] = useState(null);
+    const [editRouteName, setEditRouteName] = useState("");
+    const [feedbackMessage, setFeedbackMessage] = useState("");
 
-    const handleAddRoute = () => {
-        const updatedRoutes = [...routes, { id: Date.now(), name: newRoute, isEditing: false }];
-        setRoutes(updatedRoutes);
-        setNewRoute("");
-        setIsAddModalOpen(false);
-    };
-
-    const handleEditToggle = (id) => {
-        const updatedRoutes = routes.map((route) => {
-            if (route.id === id) {
-                return { ...route, isEditing: !route.isEditing };
+    // Fetch routes on component mount
+    useEffect(() => {
+        const fetchRoutes = async () => {
+            try {
+                const response = await fetch("http://localhost:8000/API/Route/getAll");
+                const data = await response.json();
+                setRoutes(data);
+            } catch (error) {
+                console.error("Error fetching routes:", error);
             }
-            return { ...route, isEditing: false }; // Close editing for other routes
-        });
-        setRoutes(updatedRoutes);
+        };
+
+        fetchRoutes();
+    }, []);
+
+    const displayFeedbackMessage = (message) => {
+        setFeedbackMessage(message);
+        setTimeout(() => {
+            setFeedbackMessage("");
+        }, 1000); // Clear the message after 3 seconds
     };
 
-    const handleEditChange = (id, value) => {
-        const updatedRoutes = routes.map((route) => {
-            if (route.id === id) {
-                return { ...route, name: value };
+    const handleAddRoute = async () => {
+        try {
+            const response = await fetch("http://localhost:8000/API/Route/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ routeName: newRoute }),
+            });
+
+            if (response.ok) {
+                const addedRoute = await response.json();
+                setRoutes([...routes, addedRoute]);
+                setNewRoute("");
+                setIsAddModalOpen(false);
+                displayFeedbackMessage("Route added successfully!");
             }
-            return route;
-        });
-        setRoutes(updatedRoutes);
+        } catch (error) {
+            console.error("Error adding route:", error);
+        }
     };
 
-    const handleDeleteRoute = () => {
-        const updatedRoutes = routes.filter((route) => route.id !== routeToDelete);
-        setRoutes(updatedRoutes);
-        setRouteToDelete(null);
-        setIsDeleteModalOpen(false);
+    const handleEditToggle = (route) => {
+        setEditingRoute(route.routesID);
+        setEditRouteName(route.routeName);
+    };
+
+    const handleSaveEdit = async () => {
+        if (!editRouteName.trim()) {
+            displayFeedbackMessage("Route name cannot be empty!");
+            return;
+        }
+        try {
+            await fetch(`http://localhost:8000/API/Route/update/${editingRoute}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ routeName: editRouteName }),
+            });
+            setRoutes((prevRoutes) =>
+                prevRoutes.map((r) =>
+                    r.routesID === editingRoute ? { ...r, routeName: editRouteName } : r
+                )
+            );
+            setEditingRoute(null);
+            setEditRouteName("");
+            displayFeedbackMessage("Route updated successfully!");
+        } catch (error) {
+            console.error("Error updating route:", error);
+        }
+    };
+
+    const handleDeleteRoute = async () => {
+        try {
+            await fetch(`http://localhost:8000/API/Route/delete/${routeToDelete}`, {
+                method: "DELETE",
+            });
+            setRoutes(routes.filter((route) => route.routesID !== routeToDelete));
+            setRouteToDelete(null);
+            setIsDeleteModalOpen(false);
+            displayFeedbackMessage("Route deleted successfully!");
+        } catch (error) {
+            console.error("Error deleting route:", error);
+        }
     };
 
     return (
         <div className="dashboard-collection-routes">
             <header className="text-center mb-4">
-                <h1>Add Route</h1>
+                <h1>Lists of Routes</h1>
+                {feedbackMessage && <p className="text-green-500">{feedbackMessage}</p>}
             </header>
             <div className="table-container overflow-x-auto">
                 <div className="flex justify-end mb-5">
@@ -68,41 +127,39 @@ const DashboardCollectionRoutes = () => {
                     </thead>
                     <tbody>
                         {routes.map((route) => (
-                            <tr key={route.id} className="hover:bg-gray-50 transition-colors">
+                            <tr key={route.routesID} className="hover:bg-gray-50 transition-colors">
                                 <td className="py-2 px-4 border-b">
-                                    {route.isEditing ? (
-                                        <input
-                                            type="text"
-                                            value={route.name}
-                                            onChange={(e) => handleEditChange(route.id, e.target.value)}
-                                            className="border-b p-1 rounded outline-none"
-                                            onBlur={() => handleEditToggle(route.id)} // optional to close on blur
-                                        />
+                                    {editingRoute === route.routesID ? (
+                                        <div className="flex items-center">
+                                            <input
+                                                type="text"
+                                                value={editRouteName}
+                                                onChange={(e) => setEditRouteName(e.target.value)}
+                                                className="border-b p-1 rounded outline-none mr-2"
+                                            />
+                                            <button
+                                                onClick={handleSaveEdit}
+                                                className="bg-green-500 text-white py-1 px-2 rounded hover:bg-green-600"
+                                                aria-label="Save Changes"
+                                            >
+                                                Save
+                                            </button>
+                                        </div>
                                     ) : (
-                                        route.name
+                                        route.routeName
                                     )}
                                 </td>
                                 <td className="py-2 px-4 border-b flex space-x-2">
-                                    {route.isEditing ? (
-                                        <button
-                                            onClick={() => handleEditToggle(route.id)}
-                                            className="text-green-500 hover:text-green-700"
-                                            aria-label="Save Changes"
-                                        >
-                                            Save
-                                        </button>
-                                    ) : (
-                                        <button
-                                            onClick={() => handleEditToggle(route.id)}
-                                            className="text-blue-500 hover:text-blue-700"
-                                            aria-label="Edit Route"
-                                        >
-                                            <PenIcon />
-                                        </button>
-                                    )}
+                                    <button
+                                        onClick={() => handleEditToggle(route)}
+                                        className="text-blue-500 hover:text-blue-700"
+                                        aria-label="Edit Route"
+                                    >
+                                        <PenIcon />
+                                    </button>
                                     <button
                                         onClick={() => {
-                                            setRouteToDelete(route.id);
+                                            setRouteToDelete(route.routesID);
                                             setIsDeleteModalOpen(true);
                                         }}
                                         aria-label="Delete Route"

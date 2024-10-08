@@ -1,5 +1,4 @@
 import GraphView from "../GraphView";
-import MapView from "../MapView";
 
 const DashboardHome = () => {
     return (
@@ -11,9 +10,6 @@ const DashboardHome = () => {
                 <div className="flex-1 ml-4">
                     <GraphView />
                 </div>
-            </div>
-            <div>
-                <MapView />
             </div>
         </div>
     );
