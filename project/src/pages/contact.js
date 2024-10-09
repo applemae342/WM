@@ -1,123 +1,105 @@
-import Navbar from "@/components/Navbar";
 import { useState } from "react";
 
-const Contact = () => {
-    const [formData, setFormData] = useState({
-        email: "",
-        phone: "",
-        address: "",
-        message: "",
-    });
+const OtherOptions = () => {
+    const [message, setMessage] = useState("");
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
+        setMessage(e.target.value);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle form submission here (e.g., send data to backend)
-        console.log(formData);
-        // Optionally, you can add a success message or redirect after form submission
+        console.log("Message submitted:", message);
     };
 
     return (
-        <div>
-            <div className="">
-                <div className="text-center">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-8">Contact Us</h2>
-                    <p className="text-lg text-gray-700 leading-relaxed mb-12">Need assistance or want to get in touch with us? Here's how:</p>
+        <div className="relative overflow-hidden">
+            <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg z-10 relative">
+                <div className="text-center mb-8">
+                    <h2 className="text-3xl font-semibold text-gray-800" style={{ fontFamily: "'Georgia', serif" }}>Other Options</h2>
+                    <p className="text-md text-gray-600 leading-relaxed mt-2" style={{ fontFamily: "'Georgia', serif" }}>
+                        Need assistance or want to get in touch with us? Here's how:
+                    </p>
                 </div>
 
-                <div className="max-w-md mx-auto">
-                    <form onSubmit={handleSubmit} className="space-y-4 p-4 bg-white rounded-lg ">
-                        <div className="mb-4">
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                                Email:
-                            </label>
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                required
-                                className="w-full px-4 py-2 rounded-md border-b outline-none focus:border-blue-500"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                                Phone:
-                            </label>
-                            <input
-                                type="tel"
-                                id="phone"
-                                name="phone"
-                                value={formData.phone}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border-b rounded-md focus:outline-none focus:border-blue-500"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="address" className="block text-sm font-medium text-gray-700">
-                                Address:
-                            </label>
-                            <input
-                                type="text"
-                                id="address"
-                                name="address"
-                                value={formData.address}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border-b rounded-md focus:outline-none focus:border-blue-500"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="message" className="block text-sm font-medium text-gray-700">
-                                Questions or other concerns:
-                            </label>
-                            <textarea
-                                id="message"
-                                placeholder="Write it here..."
-                                name="message"
-                                value={formData.message}
-                                onChange={handleChange}
-                                rows="4"
-                                className="w-full px-4 py-2 border-b rounded-md focus:outline-none focus:border-blue-500"
-                            ></textarea>
-                        </div>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="mb-4">
+                        <label htmlFor="message" className="block text-sm font-medium text-gray-700" style={{ fontFamily: "'Georgia', serif" }}>
+                            Questions or other concerns:
+                        </label>
+                        <textarea
+                            id="message"
+                            placeholder="Write it here..."
+                            value={message}
+                            onChange={handleChange}
+                            rows="4"
+                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                            style={{ fontFamily: "'Georgia', serif" }}
+                        ></textarea>
+                    </div>
 
-                        <div className="flex justify-end">
-                            <button
-                                type="submit"
-                                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-                            >
-                                Submit
-                            </button>
-                        </div>
-                        <div>
-                            <p className="text-center">Other Options</p>
-                        </div>
-                        <div className="flex justify-center items-center mt-8 space-x-8">
+                    <div className="flex justify-end">
+                        <button
+                            type="submit"
+                            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-700 transition"
+                        >
+                            Submit
+                        </button>
+                    </div>
+
+                    <div className="text-center mt-20 mb-16">
+                        <p className="text-lg font-semibold" style={{ fontFamily: "'Georgia', serif" }}>Follow us on:</p>
+                        <div className="flex justify-center items-center mt-4 space-x-8">
                             <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
-                                <img src="/images/facebook.png" alt="Facebook" className="w-8 h-8" />
+                                <img src="/images/facebook.png" alt="Facebook" className="w-10 h-10 transition-transform transform hover:scale-110" />
                             </a>
-                            <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
-                                <img src="/images/twitter.png" alt="Twitter" className="w-8 h-8" />
+                            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+                                <img src="/images/instag.jpg" alt="Instagram" className="w-10 h-10 transition-transform transform hover:scale-110" />
                             </a>
                             <a href="mailto:your.email@example.com">
-                                <img src="/images/email.png" alt="Email" className="w-8 h-8" />
+                                <img src="/images/email.png" alt="Email" className="w-10 h-10 transition-transform transform hover:scale-110" />
                             </a>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
+            </div>
 
-                {/* Social Media Links */}
+            {/* Background Circle Design - Positioned like the image you provided */}
+            <div className="absolute inset-0 z-0">
+                <svg
+                    className="absolute top-[-1px] left-[-70px] h-72 w-72 text-blue-200 opacity-75"
+                    viewBox="0 0 200 200"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <circle cx="100" cy="100" r="100" fill="#2E8ECA" />
+                </svg>
+
+                <svg
+                    className="absolute top-[30%] left-[20%] h-48 w-48 text-blue-300 opacity-50"
+                    viewBox="0 0 200 200"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <circle cx="100" cy="100" r="100" fill="#4BAA6C" />
+                </svg>
+
+                <svg
+                    className="absolute bottom-[10%] right-[10%] h-56 w-56 text-blue-400 opacity-50"
+                    viewBox="0 0 200 200"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <circle cx="100" cy="100" r="100" fill="#4BAA6C" />
+                </svg>
+
+                <svg
+                    className="absolute bottom-[-1px] right-[-50px] h-64 w-64 text-blue-200 opacity-50"
+                    viewBox="0 0 200 200"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <circle cx="100" cy="100" r="100" fill="#2E8ECA" />
+                </svg>
             </div>
         </div>
     );
 };
 
-export default Contact;
+export default OtherOptions;
