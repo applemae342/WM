@@ -34,16 +34,29 @@ const DashboardUsers = () => {
 
     // Match users with statuses by userID from ResidentStatus and userId from User
     const usersWithStatus = users.map((user) => {
-        const userStatus = statuses.find((status) => status.userID === user.userId); // Matching userID from status and userId from user
+        const userStatus = statuses.find((status) => status.userID === user.userId);
         return {
             ...user,
-            status: userStatus ? userStatus.statusName : "No Status", // Use statusName for the status field
+            status: userStatus ? userStatus.statusName : "No Status",
         };
     });
+
+    // Count registered users and statuses
+    const totalRegisteredUsers = users.length;
+    const statusCounts = usersWithStatus.reduce((acc, user) => {
+        acc[user.status] = (acc[user.status] || 0) + 1; // Increment the count for each status
+        return acc;
+    }, {});
 
     return (
         <div className="p-4">
             <h1 className="text-xl font-semibold mb-4">Users and Statuses</h1>
+            <div className="mb-4">
+                <p>Total Registered Users: {totalRegisteredUsers}</p>
+                <p>Pending: {statusCounts["pending"] || 0}</p>
+                <p>Collected: {statusCounts["collected"] || 0}</p>
+                <p>No Status: {statusCounts["No Status"] || 0}</p>
+            </div>
             <div className="overflow-x-auto">
                 <div className="max-h-[400px] overflow-y-auto">
                     <table className="min-w-full bg-white border border-gray-300">

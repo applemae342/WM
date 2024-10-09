@@ -17,10 +17,13 @@ const ResidentsHomeDashboard = () => {
     // Example notification count
     const notificationCount = notifications.length;
 
+    // Retrieve username from local storage
+    const username = localStorage.getItem("username") || "User";
+
     return (
         <div>
             <div className="flex justify-between items-center p-4">
-                <p>Welcome Jhonryl Martinez</p>
+                <p>Welcome {username}</p> {/* Dynamic welcome message */}
                 <div className="relative">
                     <button onClick={openModal} className="text-blue-500 p-2" aria-label="View Notifications">
                         <BellIcon className="w-6 h-6" />
@@ -46,13 +49,11 @@ const ResidentsHomeDashboard = () => {
                             </div>
                             <p className="text-gray-500 text-sm mt-2">{notification.time}</p>
                         </div>
-                    ))
+                   ))
                 ) : (
                     <p className="text-gray-700 p-4">No new notifications yet.</p>
                 )}
             </Modal>
-
-           
         </div>
     );
 };

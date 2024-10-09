@@ -6,7 +6,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const GraphView = () => {
     const data = {
-        labels: ["Registered Users", "Collected", "Pending"],
+        labels: ["Registered Users", "Collected", "Pending","No Status"],
         datasets: [
             {
                 label: "Counts",
