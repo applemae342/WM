@@ -1,9 +1,7 @@
 import AdminNavBar from "@/components/AdminNavbar";
-import { HomeIcon, LocationIcon, ScheduleIcon, StarIcon, StatusIcon } from "@/components/heroIcons/Icons";
+import { HomeIcon, StarIcon, StatusIcon } from "@/components/heroIcons/Icons";
 import ResidentsHomeDashboard from "@/components/ResidentsDashboardComponents/ResidentsHomeDashboard";
-import ResidentsLocationTrackingDashboard from "@/components/ResidentsDashboardComponents/ResidentsLocationTrackingDashboard";
-import ResidentsReviews from "@/components/ResidentsDashboardComponents/ResidentsReviews";
-import ResidentsScheduleDashboard from "@/components/ResidentsDashboardComponents/ResidentsScheduleDashboard";
+import ResidentsReviews from "@/components/ResidentsDashboardComponents/ViewAnnouncements";
 import ResidentsUpdateStatusDashboard from "@/components/ResidentsDashboardComponents/ResidentsUpdateStatusDashboard";
 import React, { useState } from "react";
 
@@ -49,13 +47,7 @@ const ResidentsDashboard = () => {
                         <HomeIcon className="w-6 h-6 mr-4" />
                         {!isCollapsed && "Home"}
                     </button>
-                    <button
-                        onClick={() => setView("locationTracking")}
-                        className="flex items-center w-full py-3 px-4 text-left hover:bg-gray-600 focus:outline-none border-b border-gray-700"
-                    >
-                        <LocationIcon className="w-6 h-6 mr-4" />
-                        {!isCollapsed && "Location Tracking"}
-                    </button>
+                  
                     <button
                         onClick={() => setView("updateStatus")}
                         className="flex items-center w-full py-3 px-4 text-left hover:bg-gray-600 focus:outline-none border-b border-gray-700"
@@ -63,19 +55,13 @@ const ResidentsDashboard = () => {
                         <StatusIcon className="w-6 h-6 mr-4" />
                         {!isCollapsed && "Update Status"}
                     </button>
-                    <button
-                        onClick={() => setView("schedules")}
-                        className="flex items-center w-full py-3 px-4 text-left hover:bg-gray-600 focus:outline-none border-b border-gray-700"
-                    >
-                        <ScheduleIcon className="w-6 h-6 mr-4" />
-                        {!isCollapsed && "Schedules"}
-                    </button>
+                    
                     <button
                         onClick={() => setView("reviews")}
                         className="flex items-center w-full py-3 px-4 text-left hover:bg-gray-600 focus:outline-none border-b border-gray-700"
                     >
                         <StarIcon className="w-6 h-6 mr-4" />
-                        {!isCollapsed && "Reviews"}
+                        {!isCollapsed && "Announcements"}
                     </button>
                 </div>
             </div>
