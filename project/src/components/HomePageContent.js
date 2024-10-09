@@ -3,31 +3,35 @@ import Image from "next/image";
 
 const HomePageContent = () => {
     return (
-        <div className=" text-white py-16 px-8 md:px-16 flex flex-col md:flex-row items-center rounded-lg shadow-lg">
-            {/* Content Section */}
-            <div className="max-w-4xl mx-auto text-center md:text-left md:mr-10">
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight text-black">
-                    Revolutionize waste management:
-                    <br className="hidden md:inline" />
-                    Track, plan routes, reduce impact for a greener future!
+        <div className="relative bg-[#FBFBFE] text-gray-1000 w-1/2 py-10 mt-60 md:py-4 px-8 md:px-16 flex flex-col items-center rounded-lg shadow-2xl max-w-3xl left-[-1px]"> {/* Increased mt value to mt-60 */}
+            {/* Content Section - Centered */}
+            <div className="text-center mb-8">
+                <h2 className="text-[28px] mt-10 font-bold mb-4 leading-tight text-gray-900" style={{ fontFamily: 'Georgia, serif' }}>
+                    Innovative Waste Solutions
                 </h2>
+
+                <p className="mt-5 text-lg text-gray-700 mb-8" style={{ fontFamily: 'Georgia, serif' }}>
+                    "Revolutionize waste management: Track, plan routes, reduce impact for a greener future!"
+                </p>
                 <Link
                     href="/GetStarted"
-                    className="bg-blue-500 text-white py-3 px-8 rounded-lg font-semibold text-lg hover:bg-blue-700 hover:text-white focus:outline-none transition duration-300 ease-in-out inline-block"
+                    className="bg-[#4BAA6C] text-white py-3 px-8 rounded-lg font-semibold text-lg hover:bg-[#2E8ECA] transition duration-300 ease-in-out"
+                    style={{ fontFamily: 'Georgia, serif' }}
                 >
-                    Get Started
-                </Link>
-                <Link
-                    href="/sign_in_page"
-                    className="bg-blue-500 text-white py-3 px-8 rounded-lg font-semibold text-lg hover:bg-blue-700 hover:text-white focus:outline-none transition duration-300 ease-in-out inline-block"
-                >
-                    Sign In
+                    GET STARTED
                 </Link>
             </div>
 
-            {/* Image Section */}
-            <div className="mt-10 md:mt-0 md:ml-10 flex-shrink-0 overflow-hidden rounded-lg shadow-lg">
-                <Image src="/images/earth.jpg" alt="Earth" width={400} height={400} layout="responsive" className="rounded-lg" />
+            {/* Image Section - Bigger Square Image with Enhanced Shadow and Adjusted Position */}
+            <div className="absolute right-[-645px] top-[47%] transform -translate-y-1/2 overflow-hidden rounded-lg shadow-lg mr-8">
+                <Image
+                    src="/images/backhround.gif"
+                    alt="Garbage Truck"
+                    width={560}
+                    height={1050}
+                    layout="intrinsic"
+                    className="shadow-2xl border border-gray-300 rounded-lg transition-transform duration-300 transform hover:scale-105"
+                />
             </div>
         </div>
     );
