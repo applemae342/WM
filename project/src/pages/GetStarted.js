@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
-import GettingStarted from "@/components/getStartedComponents/gettingStarted";
-import SetupAccount from "@/components/getStartedComponents/setUpAccount";
-import AddressConfig from "@/components/getStartedComponents/addressConfig";
+import GettingStarted from "@/components/getStartedComponents/MapView";
+import SetupAccount from "@/components/getStartedComponents/Announcements";
 
 const GetStarted = () => {
     const [activeSection, setActiveSection] = useState("gettingStarted");
@@ -45,7 +44,7 @@ const GetStarted = () => {
                             }`}
                             onClick={() => setActiveSection("gettingStarted")}
                         >
-                            Getting Started
+                            Truck Location Tracking
                         </li>
                         <li
                             className={`cursor-pointer p-2 rounded-md transition-colors ${
@@ -53,16 +52,9 @@ const GetStarted = () => {
                             }`}
                             onClick={() => setActiveSection("setupAccount")}
                         >
-                            Setup Your Account
+                            Announcements
                         </li>
-                        <li
-                            className={`cursor-pointer p-2 rounded-md transition-colors ${
-                                activeSection === "addressConfig" ? "bg-gray-700" : "hover:bg-gray-700"
-                            }`}
-                            onClick={() => setActiveSection("addressConfig")}
-                        >
-                            Address Configuration
-                        </li>
+                        
                     </ul>
                 </div>
             </div>
