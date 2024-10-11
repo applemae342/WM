@@ -3,8 +3,7 @@ import { HomeIcon, LocationIcon, ScheduleIcon, StarIcon, StatusIcon } from "@/co
 import ResidentsHomeDashboard from "@/components/ResidentsDashboardComponents/ResidentsHomeDashboard";
 import ResidentsLocationTrackingDashboard from "@/components/ResidentsDashboardComponents/ResidentsLocationTrackingDashboard";
 import ResidentsReviews from "@/components/ResidentsDashboardComponents/ResidentsReviews";
-import ResidentsScheduleDashboard from "@/components/ResidentsDashboardComponents/ResidentsScheduleDashboard";
-import ResidentsUpdateStatusDashboard from "@/components/ResidentsDashboardComponents/ResidentsUpdateStatusDashboard";
+
 import React, { useState } from "react";
 
 const ResidentsDashboard = () => {
@@ -21,10 +20,8 @@ const ResidentsDashboard = () => {
                 return <ResidentsHomeDashboard />;
             case "locationTracking":
                 return <ResidentsLocationTrackingDashboard />;
-            case "updateStatus":
-                return <ResidentsUpdateStatusDashboard />;
-            case "schedules":
-                return <ResidentsScheduleDashboard />;
+           
+        
             case "reviews":
                 return <ResidentsReviews />;
             default:
@@ -56,26 +53,14 @@ const ResidentsDashboard = () => {
                         <LocationIcon className="w-6 h-6 mr-4" />
                         {!isCollapsed && "Location Tracking"}
                     </button>
-                    <button
-                        onClick={() => setView("updateStatus")}
-                        className="flex items-center w-full py-3 px-4 text-left hover:bg-gray-600 focus:outline-none border-b border-gray-700"
-                    >
-                        <StatusIcon className="w-6 h-6 mr-4" />
-                        {!isCollapsed && "Update Status"}
-                    </button>
-                    <button
-                        onClick={() => setView("schedules")}
-                        className="flex items-center w-full py-3 px-4 text-left hover:bg-gray-600 focus:outline-none border-b border-gray-700"
-                    >
-                        <ScheduleIcon className="w-6 h-6 mr-4" />
-                        {!isCollapsed && "Schedules"}
-                    </button>
+                    
+                   
                     <button
                         onClick={() => setView("reviews")}
                         className="flex items-center w-full py-3 px-4 text-left hover:bg-gray-600 focus:outline-none border-b border-gray-700"
                     >
                         <StarIcon className="w-6 h-6 mr-4" />
-                        {!isCollapsed && "Reviews"}
+                        {!isCollapsed && "Announcements"}
                     </button>
                 </div>
             </div>

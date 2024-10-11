@@ -1,6 +1,6 @@
 import CollectorHomeDashboard from "@/components/CollectorDashboardComponents/CollectorHomeDashboard";
-import CollectorLocationDashboard from "@/components/CollectorDashboardComponents/CollectorViewAnnouncements"; // Ensure this points to the announcements view
-import CollectorScheduleDashboard from "@/components/CollectorDashboardComponents/SmsNotifier";
+import CollectorLocationDashboard from "@/components/CollectorDashboardComponents/ShareLocation"; // Ensure this points to the announcements view
+import CollectorAnnouncementsDashboard from "@/components/CollectorDashboardComponents/ViewAnnouncements";
 import AdminNavBar from "@/components/AdminNavbar";
 import { HomeIcon, LocationIcon, StatusIcon } from "@/components/heroIcons/Icons";
 import React, { useState } from "react";
@@ -21,8 +21,8 @@ const CollectorDashboard = () => {
         switch (view) {
             case "home":
                 return <CollectorHomeDashboard onViewAnnouncements={handleViewAnnouncements} />;
-            case "schedules":
-                return <CollectorScheduleDashboard />;
+            case "announcement":
+                return <CollectorAnnouncementsDashboard />;
             case "yourLocation":
                 return <CollectorLocationDashboard />; // This should display announcements
             default:
@@ -48,18 +48,18 @@ const CollectorDashboard = () => {
                         {!isCollapsed && "Home"}
                     </button>
                     <button
-                        onClick={() => setView("schedules")}
+                        onClick={() => setView("announcement")}
                         className="flex items-center w-full py-3 px-4 text-left hover:bg-gray-600 focus:outline-none border-b border-gray-700"
                     >
                         <StatusIcon className="w-6 h-6 mr-4" />
-                        {!isCollapsed && "SMS Notifier"}
+                        {!isCollapsed && "Announcements"}
                     </button>
                     <button
                         onClick={handleViewAnnouncements} // Directly handle view announcements
                         className="text-nowrap flex items-center w-full py-3 px-4 text-left hover:bg-gray-600 focus:outline-none border-b border-gray-700"
                     >
                         <LocationIcon className="w-6 h-6 mr-4" />
-                        {!isCollapsed && "View Announcements"}
+                        {!isCollapsed && "Your Location"}
                     </button>
                 </div>
             </div>

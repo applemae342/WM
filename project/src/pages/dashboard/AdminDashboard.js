@@ -1,7 +1,7 @@
 import AdminNavBar from "@/components/AdminNavbar";
 import DashboardCollectionRoutes from "@/components/AdminDashboardComponents/AddRoutes";
 import DashboardHome from "@/components/AdminDashboardComponents/DashboardHome";
-import DashboardResidentsStatus from "@/components/AdminDashboardComponents/DashboardResidentsStatus";
+import DashboardResidentsStatus from "@/components/AdminDashboardComponents/CollectorAndWasteRecords";
 import DashboardUsers from "@/components/AdminDashboardComponents/DashboardUsers";
 import DashboardReviews from "@/components/AdminDashboardComponents/Announcements";
 import { HomeIcon, LocationIcon, StarIcon, StatusIcon, TrashIcon, UserIcon } from "@/components/heroIcons/Icons";
@@ -62,8 +62,9 @@ const AdminDashboard = () => {
                         className="flex items-center w-full py-3 px-4 text-left hover:bg-gray-600 focus:outline-none border-b border-gray-700"
                     >
                         <StatusIcon className="w-6 h-6 mr-4" />
-                        {!isCollapsed && "Residents Status"}
+                        {!isCollapsed && "Admin Console "}
                     </button>
+                    
                     <button
                         onClick={() => setView("collectionRoutes")}
                         className="flex items-center w-full py-3 px-4 text-left hover:bg-gray-600 focus:outline-none border-b border-gray-700"
