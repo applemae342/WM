@@ -29,11 +29,9 @@ const About = () => {
             </div>
 
             {/* About Text Section */}
-            <div className="text-center mb-6 max-w-md mx-auto z-10 relative">
-                <h2 className="text-3xl font-bold text-gray-800 mb-3" style={{ fontFamily: 'Georgia, serif' }}>
-                    About Us
-                </h2>
-                <p className="text-gray-700 leading-relaxed" style={{ fontFamily: 'Georgia, serif', fontSize: '20px' }}>
+            <div className="text-center mb-6 max-w-md mx-auto z-10 relative font-sans">
+                <h2 className="text-3xl font-bold text-gray-800 mb-3">About Us</h2>
+                <p className="text-gray-700 leading-relaxed" style={{ fontSize: '20px' }}>
                     Welcome to the Waste Management Tracking System! We are dedicated to revolutionizing waste management through innovative web-based solutions designed to optimize waste collection processes, enhance efficiency, and minimize environmental impact.
                 </p>
             </div>
@@ -51,17 +49,17 @@ const About = () => {
                     {/* First row with Vision and Mission */}
                     <div className="flex justify-around items-start w-full mt-10">
                         {/* Vision Box */}
-                        <div className="bg-white bg-opacity-70 p-6 rounded-lg max-w-md shadow-lg">
-                            <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: 'Georgia, serif' }}>Vision</h2>
-                            <p className="text-base" style={{ fontFamily: 'Georgia, serif' }}>
+                        <div className="bg-white bg-opacity-70 p-6 rounded-lg max-w-md shadow-lg font-sans">
+                            <h2 className="text-2xl font-bold mb-4">Vision</h2>
+                            <p className="text-base">
                                 We envision a future where waste management is efficient, transparent, and environmentally conscious. By leveraging technology and engaging stakeholders, we aim to reduce missed pickups, enhance communication, and optimize waste management practices for the benefit of communities and the environment.
                             </p>
                         </div>
 
                         {/* Mission Box */}
-                        <div className="bg-white bg-opacity-70 p-6 rounded-lg max-w-md shadow-lg">
-                            <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: 'Georgia, serif' }}>Mission</h2>
-                            <p className="text-base" style={{ fontFamily: 'Georgia, serif' }}>
+                        <div className="bg-white bg-opacity-70 p-6 rounded-lg max-w-md shadow-lg font-sans">
+                            <h2 className="text-2xl font-bold mb-4">Mission</h2>
+                            <p className="text-base">
                                 Our mission is to optimize waste collection processes, ensure timely pickups, and minimize environmental impact. We strive to streamline operations, promote resource efficiency, and foster environmental sustainability through transparent communication and user-friendly interfaces.
                             </p>
                         </div>
@@ -69,19 +67,19 @@ const About = () => {
 
                     {/* Second row with Our Goals */}
                     <div className="w-full flex justify-center mt-48">
-                        <div className="bg-white bg-opacity-70 p-6 rounded-lg max-w-2xl shadow-2xl">
-                            <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: 'Georgia, serif' }}>Our Goals</h2>
-                            <p className="text-base" style={{ fontFamily: 'Georgia, serif' }}>
+                        <div className="bg-white bg-opacity-70 p-6 rounded-lg max-w-2xl shadow-2xl font-sans">
+                            <h2 className="text-2xl font-bold mb-4">Our Goals</h2>
+                            <p className="text-base">
                                 Our goal is to keep improving waste management by using the latest technologies to make waste collection more efficient and eco-friendly. We aim to:
                             </p>
-                            <ul className="list-disc list-inside" style={{ fontFamily: 'Georgia, serif' }}>
+                            <ul className="list-disc list-inside">
                                 <li>Reduce the environmental impact of waste collection.</li>
                                 <li>Make sure no pickups are missed with better tracking systems.</li>
                                 <li>Increase recycling through better sorting methods and awareness.</li>
                                 <li>Work with local governments and communities for more sustainable waste disposal.</li>
                                 <li>Provide clear, easy-to-understand reports and tools for users.</li>
                             </ul>
-                            <p className="text-base mt-4" style={{ fontFamily: 'Georgia, serif' }}>
+                            <p className="text-base mt-4">
                                 By achieving these goals, we hope to help create a cleaner and more sustainable future.
                             </p>
                         </div>

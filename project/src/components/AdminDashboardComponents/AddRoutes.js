@@ -31,7 +31,7 @@ const DashboardCollectionRoutes = () => {
         setFeedbackMessage(message);
         setTimeout(() => {
             setFeedbackMessage("");
-        }, 1000); // Clear the message after 3 seconds
+        }, 1000); // Clear the message after 1 second
     };
 
     const handleAddRoute = async () => {
@@ -102,9 +102,11 @@ const DashboardCollectionRoutes = () => {
     };
 
     return (
-        <div className="dashboard-collection-routes">
+        <div className="dashboard-collection-routes font-sans"> {/* Ensure all text uses Open Sans */}
             <header className="text-center mb-4">
-                <h1>Lists of Routes</h1>
+                <h1 className="text-2xl font-bold text-[#2E8ECA]"> {/* Font size 18 and color #2E8ECA */}
+                    Lists of Routes
+                </h1>
                 {feedbackMessage && <p className="text-green-500">{feedbackMessage}</p>}
             </header>
             <div className="table-container overflow-x-auto">
@@ -173,7 +175,7 @@ const DashboardCollectionRoutes = () => {
                     </tbody>
                 </table>
             </div>
-            <div className="mt-10">
+            <div className="mt-10 font-sans"> {/* Ensure all text in Collection History uses Open Sans */}
                 <CollectionHistory />
             </div>
 

@@ -1,34 +1,22 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router"; // Import useRouter for navigation
+import { useRouter } from "next/router";
 import Navbar from "@/components/Navbar";
-import { LockClosed } from "@/components/heroIcons/Icons";
-import axios from "axios"; // Import axios for making HTTP requests
+import { UserIcon, LockClosed } from "@/components/heroIcons/Icons";
+import axios from "axios";
 
 const SignIn = () => {
-    const [username, setUsername] = useState(""); // State for username
-    const [password, setPassword] = useState(""); // State for password
-    const router = useRouter(); // Initialize useRouter
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const router = useRouter();
 
-    // Handle form submission
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Prevent the default form submission behavior
-        console.log("Username:", username); // Log the username for debugging
-        console.log("Password:", password); // Log the password for debugging
-
+        e.preventDefault();
         try {
-            // Make POST request to your login API
-            const response = await axios.post("http://localhost:8000/API/login", {
-                username, // Send the username
-                password, // Send the password
-            });
-
-            // Check the response and redirect based on the user's role
+            const response = await axios.post("http://localhost:8000/API/login", { username, password });
             if (response.status === 200) {
-                const { role } = response.data.user; // Extract role from the response
-                console.log("User role:", role); // Log the role for debugging
-
-                // Redirect based on the user's role
+                const { role } = response.data.user;
                 switch (role) {
                     case "admin":
                         router.push("/dashboard/AdminDashboard");
@@ -40,80 +28,86 @@ const SignIn = () => {
                         router.push("/dashboard/CollectorDashboard");
                         break;
                     default:
-                        console.error("Invalid role");
                         alert("Access denied. Invalid role.");
                 }
             } else {
                 alert("Login failed. Please check your credentials and try again.");
             }
         } catch (error) {
-            // Handle errors from the API call
-            console.error("Login failed:", error.response ? error.response.data : error.message);
             alert("Login failed. Please check your credentials and try again.");
         }
     };
 
     return (
-        <div>
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 relative font-sans">
             <Navbar />
-            <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-                <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-lg">
-                    <div>
-                        <h2 className="mt-6 text-center text-2xl text-gray-900">Sign in to your account</h2>
-                    </div>
-                    <form className="mt-8 space-y-2" onSubmit={handleSubmit}>
-                        <div>
-                            <div className="relative">
-                                <div className="flex items-center">
-                                    <input
-                                        id="username"
-                                        name="username"
-                                        type="text"
-                                        autoComplete="username"
-                                        required
-                                        value={username}
-                                        onChange={(e) => setUsername(e.target.value)} // Update username
-                                        className="mt-1 block w-full px-3 py-2 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                        placeholder="Username"
-                                    />
-                                </div>
-                            </div>
+            {/* Adding Circular Backgrounds */}
+            <div className="absolute top-0 left-0 w-64 h-64 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 z-0" />
+            <div className="absolute top-20 right-0 w-96 h-96 bg-teal-200 rounded-full mix-blend-multiply filter blur-2xl opacity-70 z-0" />
+
+            <div className="flex justify-center items-center relative z-10 mt-20"> {/* Added mt-8 for top margin */}
+                {/* Left Side: Sign-in Form */}
+                <div className="bg-white rounded-md shadow-lg p-8 w-full max-w-xl">
+                    <h2 className="text-center text-2xl font-semibold text-gray-800 mb-6">
+                        Please Sign in Your Account.
+                    </h2>
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        {/* Username Input */}
+                        <div className="relative">
+                            <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <UserIcon className="text-gray-500" />
+                            </span>
+                            <span className="absolute inset-y-0 left-10 w-[2px] bg-gray-400" />
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                required
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                className="w-full pl-12 pr-20 py-3 bg-gray-200 text-gray-900 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="Username"
+                            />
                         </div>
-                        <div>
-                            <div className="relative">
-                                <div className="flex items-center">
-                                    <LockClosed className="h-6 w-6 text-gray-400" />
-                                    <input
-                                        id="password"
-                                        name="password"
-                                        type="password"
-                                        autoComplete="current-password"
-                                        required
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)} // Update password
-                                        className="mt-1 block w-full px-3 py-2 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                        placeholder="Password"
-                                    />
-                                </div>
-                            </div>
+
+                        {/* Password Input */}
+                        <div className="relative">
+                            <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <LockClosed className="text-gray-500" />
+                            </span>
+                            <span className="absolute inset-y-0 left-10 w-[2px] bg-gray-400" />
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                id="password"
+                                name="password"
+                                required
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="w-full pl-12 pr-4 py-3 bg-gray-200 text-gray-900 rounded-md border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="Password"
+                            />
                         </div>
-                        <div>
-                            <button
-                                type="submit" // Ensure this button submits the form
-                                className="mt-6 w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            >
-                                Sign in
-                            </button>
+
+                        {/* Forgot Password */}
+                        <div className="text-center">
+                            <Link href="/forgot_password" className="text-sm text-blue-600 hover:underline">
+                                Forgot your password?
+                            </Link>
                         </div>
+
+                        {/* Sign-In Button */}
+                        <button
+                            type="submit"
+                            className="w-full py-3 bg-[#2E8ECA] text-white font-bold text-lg rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                            SIGN IN
+                        </button>
                     </form>
+
+                    {/* Sign Up Section */}
                     <div className="text-sm text-center mt-4">
-                        <Link href="/forgot_password" className="font-medium text-indigo-600 hover:text-indigo-500">
-                            Forgot your password?
-                        </Link>
-                    </div>
-                    <div className="text-sm text-center mt-4">
-                        <p className="text-gray-600">Don't have an account?</p>
-                        <Link href="/GetStarted" className="font-medium text-indigo-600 hover:text-indigo-500">
+                        <p className="text-gray-600 inline">Don't have an account? </p>
+                        <Link href="/GetStarted" className="font-medium text-indigo-600 hover:text-indigo-500 inline">
                             Sign up
                         </Link>
                     </div>

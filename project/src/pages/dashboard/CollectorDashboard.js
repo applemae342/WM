@@ -1,9 +1,9 @@
 import CollectorHomeDashboard from "@/components/CollectorDashboardComponents/CollectorHomeDashboard";
-import CollectorLocationDashboard from "@/components/CollectorDashboardComponents/CollectorViewAnnouncements"; // Ensure this points to the announcements view
-import CollectorScheduleDashboard from "@/components/CollectorDashboardComponents/SmsNotifier";
+import CollectorLocationDashboard from "@/components/CollectorDashboardComponents/ShareLocation"; 
+import CollectorAnnouncementsDashboard from "@/components/CollectorDashboardComponents/ViewAnnouncements";
 import AdminNavBar from "@/components/AdminNavbar";
-import { HomeIcon, LocationIcon, StatusIcon } from "@/components/heroIcons/Icons";
-import React, { useState } from "react";
+import Image from "next/image";
+import { useState } from "react";
 
 const CollectorDashboard = () => {
     const [view, setView] = useState("home");
@@ -14,62 +14,66 @@ const CollectorDashboard = () => {
     };
 
     const handleViewAnnouncements = () => {
-        setView("yourLocation"); // This should correspond to your announcements view
+        setView("yourLocation");
     };
 
     const renderView = () => {
         switch (view) {
             case "home":
                 return <CollectorHomeDashboard onViewAnnouncements={handleViewAnnouncements} />;
-            case "schedules":
-                return <CollectorScheduleDashboard />;
+            case "announcement":
+                return <CollectorAnnouncementsDashboard />;
             case "yourLocation":
-                return <CollectorLocationDashboard />; // This should display announcements
+                return <CollectorLocationDashboard />;
             default:
                 return <CollectorHomeDashboard onViewAnnouncements={handleViewAnnouncements} />;
         }
     };
 
     return (
-        <div className="flex flex-row h-screen overflow-hidden">
-            <div className={`flex flex-col ${isCollapsed ? "w-[60px]" : "w-[200px]"} bg-gray-800 text-white transition-all duration-300`}>
-                {/* Toggle Button */}
-                <button onClick={toggleSidebar} className="p-2 text-white rounded-full self-end bg-gray-700">
-                    {isCollapsed ? "→" : "←"}
-                </button>
+        <div className="flex h-screen font-sans">
+            <AdminNavBar /> {/* Place AdminNavBar at the top */}
 
-                {/* Sidebar Content */}
-                <div className="flex flex-col w-full">
-                    <button
-                        onClick={() => setView("home")}
-                        className="flex items-center w-full text-white py-3 px-4 text-left hover:bg-gray-600 focus:outline-none border-b border-gray-700"
-                    >
-                        <HomeIcon className="w-6 h-6 mr-4" />
-                        {!isCollapsed && "Home"}
-                    </button>
-                    <button
-                        onClick={() => setView("schedules")}
-                        className="flex items-center w-full py-3 px-4 text-left hover:bg-gray-600 focus:outline-none border-b border-gray-700"
-                    >
-                        <StatusIcon className="w-6 h-6 mr-4" />
-                        {!isCollapsed && "SMS Notifier"}
-                    </button>
-                    <button
-                        onClick={handleViewAnnouncements} // Directly handle view announcements
-                        className="text-nowrap flex items-center w-full py-3 px-4 text-left hover:bg-gray-600 focus:outline-none border-b border-gray-700"
-                    >
-                        <LocationIcon className="w-6 h-6 mr-4" />
-                        {!isCollapsed && "View Announcements"}
-                    </button>
+            {/* Sidebar */}
+            <div className={`bg-gray-800 text-white shadow-md fixed z-50 h-full transition-all duration-300 ${isCollapsed ? "w-23" : "w-64"} top-[64px]`}>
+                <div className="flex flex-col h-full">
+                    {/* Hamburger Menu Button */}
+                    <div className="flex items-center justify-between p-2">
+                        <button onClick={toggleSidebar} className="focus:outline-none flex items-center">
+                            <Image 
+                                src="/images/hamburgermenu.png" 
+                                alt="Menu" 
+                                width={38} 
+                                height={38} 
+                                className="mr-2 ml-4" 
+                                priority 
+                            />
+                        </button>
+                    </div>
+                    {/* Sidebar Content */}
+                    <div className="mt-2 flex-grow">
+                        <ul className="space-y-4">
+                            <li className={`flex items-center cursor-pointer p-2 rounded-md transition duration-200 ${view === "home" ? "bg-gray-600" : "hover:bg-gray-600"}`} onClick={() => setView("home")}>
+                                <Image src="/images/home.png" alt="Home" width={30} height={30} className="mr-2 ml-4" />
+                                {!isCollapsed && <span className="text-lg ml-3 font-sans">Home</span>} {/* Ensure font is Open Sans */}
+                            </li>
+                            <li className={`flex items-center cursor-pointer p-2 rounded-md transition duration-200 ${view === "announcement" ? "bg-gray-600" : "hover:bg-gray-600"}`} onClick={() => setView("announcement")}>
+                                <Image src="/images/announcement.png" alt="Announcements" width={29} height={29} className="mr-2 ml-4" />
+                                {!isCollapsed && <span className="text-lg ml-3 font-sans">Announcements</span>} {/* Ensure font is Open Sans */}
+                            </li>
+                            <li className={`flex items-center cursor-pointer p-2 rounded-md transition duration-200 ${view === "yourLocation" ? "bg-gray-600" : "hover:bg-gray-600"}`} onClick={handleViewAnnouncements}>
+                                <Image src="/images/location.png" alt="Your Location" width={37} height={37} className="mr-2 ml-3" />
+                                {!isCollapsed && <span className="text-lg ml-2 font-sans">Your Location</span>} {/* Ensure font is Open Sans */}
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <div className="flex flex-col flex-1">
-                <div className="w-full">
-                    <AdminNavBar />
-                </div>
-                <div className="flex-1 p-8 bg-slate-50 overflow-auto">
-                    {/* Main content */}
-                    <div className="border border-gray-200 p-4 bg-white rounded-lg shadow-sm">{renderView()}</div>
+
+            {/* Main Content */}
+            <div className={`flex-1 p-6 bg-gray-100 transition-all duration-300 ${isCollapsed ? "ml-16" : "ml-64"} mt-[60px]`}>
+                <div className="border border-gray-200 p-4 bg-white rounded-lg shadow-sm mt-4 font-sans">
+                    {renderView()}
                 </div>
             </div>
         </div>

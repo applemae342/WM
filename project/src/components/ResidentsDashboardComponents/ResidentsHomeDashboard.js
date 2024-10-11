@@ -18,9 +18,9 @@ const ResidentsHomeDashboard = () => {
     const notificationCount = notifications.length;
 
     return (
-        <div>
+        <div className="font-sans">
             <div className="flex justify-between items-center p-4">
-                <p>Welcome Jhonryl Martinez</p>
+                <p className="text-[#2E8ECA] font-bold text-2xl">Welcome Jhonryl Martinez</p>
                 <div className="relative">
                     <button onClick={openModal} className="text-blue-500 p-2" aria-label="View Notifications">
                         <BellIcon className="w-6 h-6" />
@@ -51,8 +51,6 @@ const ResidentsHomeDashboard = () => {
                     <p className="text-gray-700 p-4">No new notifications yet.</p>
                 )}
             </Modal>
-
-           
         </div>
     );
 };

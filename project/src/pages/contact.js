@@ -15,16 +15,16 @@ const OtherOptions = () => {
     return (
         <div className="relative overflow-hidden">
             <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg z-10 relative">
-                <div className="text-center mb-8">
-                    <h2 className="text-3xl font-semibold text-gray-800" style={{ fontFamily: "'Georgia', serif" }}>Other Options</h2>
-                    <p className="text-md text-gray-600 leading-relaxed mt-2" style={{ fontFamily: "'Georgia', serif" }}>
+                <div className="text-center mb-8 font-sans"> {/* Added font-sans class */}
+                    <h2 className="text-3xl font-semibold text-gray-800">Other Options</h2>
+                    <p className="text-md text-gray-600 leading-relaxed mt-2">
                         Need assistance or want to get in touch with us? Here's how:
                     </p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="mb-4">
-                        <label htmlFor="message" className="block text-sm font-medium text-gray-700" style={{ fontFamily: "'Georgia', serif" }}>
+                        <label htmlFor="message" className="block text-sm font-medium text-gray-700 font-sans">
                             Questions or other concerns:
                         </label>
                         <textarea
@@ -33,22 +33,21 @@ const OtherOptions = () => {
                             value={message}
                             onChange={handleChange}
                             rows="4"
-                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-                            style={{ fontFamily: "'Georgia', serif" }}
+                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500 font-sans"
                         ></textarea>
                     </div>
 
                     <div className="flex justify-end">
                         <button
                             type="submit"
-                            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-700 transition"
+                            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-700 transition font-sans"
                         >
                             Submit
                         </button>
                     </div>
 
-                    <div className="text-center mt-20 mb-16">
-                        <p className="text-lg font-semibold" style={{ fontFamily: "'Georgia', serif" }}>Follow us on:</p>
+                    <div className="text-center mt-20 mb-16 font-sans">
+                        <p className="text-lg font-semibold">Follow us on:</p>
                         <div className="flex justify-center items-center mt-4 space-x-8">
                             <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
                                 <img src="/images/facebook.png" alt="Facebook" className="w-10 h-10 transition-transform transform hover:scale-110" />
