@@ -16,7 +16,7 @@ const SetupAccount = ({ onNextClick, onBackClick }) => {
 
         // Save data to localStorage
         localStorage.setItem("accountDetails", JSON.stringify({ firstname, lastname, username, password }));
-        
+
         setError("");
         onNextClick();
     };

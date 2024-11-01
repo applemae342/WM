@@ -18,7 +18,9 @@ const ForgotPassword = () => {
             <div className="absolute top-0 left-0 w-64 h-64 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 z-0" />
             <div className="absolute top-20 right-0 w-96 h-96 bg-teal-200 rounded-full mix-blend-multiply filter blur-2xl opacity-70 z-0" />
 
-            <div className="flex justify-center items-center relative z-10 mt-20"> {/* Added mt-8 for top margin */}
+            <div className="flex justify-center items-center relative z-10 mt-20">
+                {" "}
+                {/* Added mt-8 for top margin */}
                 {/* Forgot Password Form */}
                 <div className="bg-white rounded-md shadow-lg p-8 w-full max-w-xl">
                     <h2 className="text-center text-2xl font-semibold text-gray-800 mb-6">Forgot Password?</h2>

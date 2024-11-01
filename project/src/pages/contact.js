@@ -15,11 +15,11 @@ const OtherOptions = () => {
     return (
         <div className="relative overflow-hidden">
             <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg z-10 relative">
-                <div className="text-center mb-8 font-sans"> {/* Added font-sans class */}
+                <div className="text-center mb-8 font-sans">
+                    {" "}
+                    {/* Added font-sans class */}
                     <h2 className="text-3xl font-semibold text-gray-800">Other Options</h2>
-                    <p className="text-md text-gray-600 leading-relaxed mt-2">
-                        Need assistance or want to get in touch with us? Here's how:
-                    </p>
+                    <p className="text-md text-gray-600 leading-relaxed mt-2">Need assistance or want to get in touch with us? Here's how:</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
