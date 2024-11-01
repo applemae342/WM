@@ -19,7 +19,7 @@ const CollectorHomeDashboard = ({ onViewAnnouncements }) => {
     };
 
     const handleNotificationClick = (notification) => {
-        onViewAnnouncements(); 
+        onViewAnnouncements();
         closeModal();
     };
 
@@ -39,7 +39,7 @@ const CollectorHomeDashboard = ({ onViewAnnouncements }) => {
             <div className="flex justify-between items-center mb-5">
                 <div>
                     <p className="text-[24px] text-[#2E8ECA] ">
-                         <b>Welcome Jhonryl Martinez</b>
+                        <b>Welcome Jhonryl Martinez</b>
                     </p>
                     <p className="text-gray-600 mt-1 text-[18px]">You can now proceed to your work!</p>
                 </div>
@@ -98,4 +98,3 @@ const CollectorHomeDashboard = ({ onViewAnnouncements }) => {
 };
 
 export default CollectorHomeDashboard;
-    

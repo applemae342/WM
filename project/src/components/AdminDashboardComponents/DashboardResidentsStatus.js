@@ -4,22 +4,13 @@ import React, { useState, useEffect } from "react";
 const NavBar = ({ onNavClick }) => {
     return (
         <div className="flex justify-around bg-gray-800 p-4 text-white mb-4">
-            <div
-                className="cursor-pointer hover:text-gray-400"
-                onClick={() => onNavClick("garbage")}
-            >
+            <div className="cursor-pointer hover:text-gray-400" onClick={() => onNavClick("garbage")}>
                 Garbage Volume Record
             </div>
-            <div
-                className="cursor-pointer hover:text-gray-400"
-                onClick={() => onNavClick("permissions")}
-            >
+            <div className="cursor-pointer hover:text-gray-400" onClick={() => onNavClick("permissions")}>
                 Fuel Permission Releases Records
             </div>
-            <div
-                className="cursor-pointer hover:text-gray-400"
-                onClick={() => onNavClick("absences")}
-            >
+            <div className="cursor-pointer hover:text-gray-400" onClick={() => onNavClick("absences")}>
                 Absences
             </div>
         </div>
@@ -126,7 +117,7 @@ const Records = () => {
 
     // Print function
     const printTable = async () => {
-        const printWindow = window.open('', '_blank');
+        const printWindow = window.open("", "_blank");
         printWindow.document.write(`
             <html>
                 <head>
@@ -161,16 +152,20 @@ const Records = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            ${await Promise.all(users.map(async (user) => {
-                                const imageHtml = user.picture ? `<img src="${user.picture}" alt="User" style="width: 200px; height: auto;"/>` : "No Picture";
-                                return `
+                            ${await Promise.all(
+                                users.map(async (user) => {
+                                    const imageHtml = user.picture
+                                        ? `<img src="${user.picture}" alt="User" style="width: 200px; height: auto;"/>`
+                                        : "No Picture";
+                                    return `
                                     <tr>
                                         <td>${user.date}</td>
                                         <td>${user.number}</td>
                                         <td>${imageHtml}</td>
                                     </tr>
                                 `;
-                            })).then(rows => rows.join(''))}
+                                })
+                            ).then((rows) => rows.join(""))}
                         </tbody>
                     </table>
                 </body>
@@ -180,7 +175,7 @@ const Records = () => {
         printWindow.print();
     };
     const printTable1 = async () => {
-        const printWindow = window.open('', '_blank');
+        const printWindow = window.open("", "_blank");
         printWindow.document.write(`
             <html>
                 <head>
@@ -215,16 +210,20 @@ const Records = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            ${await Promise.all(users.map(async (user) => {
-                                const imageHtml = user.picture ? `<img src="${user.picture}" alt="User" style="width: 200px; height: auto;"/>` : "No Picture";
-                                return `
+                            ${await Promise.all(
+                                users.map(async (user) => {
+                                    const imageHtml = user.picture
+                                        ? `<img src="${user.picture}" alt="User" style="width: 200px; height: auto;"/>`
+                                        : "No Picture";
+                                    return `
                                     <tr>
                                         <td>${user.date}</td>
                                         <td>${user.number}</td>
                                         <td>${imageHtml}</td>
                                     </tr>
                                 `;
-                            })).then(rows => rows.join(''))}
+                                })
+                            ).then((rows) => rows.join(""))}
                         </tbody>
                     </table>
                 </body>
@@ -272,24 +271,17 @@ const Records = () => {
             {/* Top Navigation Bar */}
             <NavBar onNavClick={handleNavClick} />
 
-
             {/* Display content based on the selected section */}
             {activeSection === "garbage" && (
                 <div>
                     <h2 className="text-lg font-semibold mb-2">Garbage Volume Record</h2>
                     {/* Add User Button */}
-                    <button
-                        onClick={() => setModalOpen1(true)}
-                        className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
-                    >
+                    <button onClick={() => setModalOpen1(true)} className="bg-blue-500 text-white px-4 py-2 rounded mb-4">
                         Add Record
                     </button>
 
                     {/* Print Button */}
-                    <button
-                        onClick={printTable}
-                        className="bg-green-500 text-white px-4 py-2 rounded mb-4 ml-2"
-                    >
+                    <button onClick={printTable} className="bg-green-500 text-white px-4 py-2 rounded mb-4 ml-2">
                         Print
                     </button>
 
@@ -310,11 +302,7 @@ const Records = () => {
                                         <td className="p-2">{user.date}</td>
                                         <td className="p-2">{user.number}</td>
                                         <td className="p-2 cursor-pointer" onClick={() => openImageModal(user.picture)}>
-                                            {user.picture ? (
-                                                <img src={user.picture} alt="User" className="h-24 w-24 object-cover" />
-                                            ) : (
-                                                "No Picture"
-                                            )}
+                                            {user.picture ? <img src={user.picture} alt="User" className="h-24 w-24 object-cover" /> : "No Picture"}
                                         </td>
                                         <td className="p-2">
                                             <button
@@ -323,10 +311,7 @@ const Records = () => {
                                             >
                                                 Update
                                             </button>
-                                            <button
-                                                onClick={() => openConfirmDeleteModal(index)}
-                                                className="bg-red-500 text-white px-2 py-1 rounded"
-                                            >
+                                            <button onClick={() => openConfirmDeleteModal(index)} className="bg-red-500 text-white px-2 py-1 rounded">
                                                 Delete
                                             </button>
                                         </td>
@@ -341,66 +326,53 @@ const Records = () => {
             {/* Content for Permissions */}
             {activeSection === "permissions" && (
                 <div>
-                <h2 className="text-lg font-semibold mb-2">Releases Records</h2>
-                {/* Add User Button */}
-                <button
-                    onClick={() => setModalOpen2(true)}
-                    className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
-                >
-                    Add Record
-                </button>
+                    <h2 className="text-lg font-semibold mb-2">Releases Records</h2>
+                    {/* Add User Button */}
+                    <button onClick={() => setModalOpen2(true)} className="bg-blue-500 text-white px-4 py-2 rounded mb-4">
+                        Add Record
+                    </button>
 
-                {/* Print Button */}
-                <button
-                    onClick={printTable}
-                    className="bg-green-500 text-white px-4 py-2 rounded mb-4 ml-2"
-                >
-                    Print
-                </button>
+                    {/* Print Button */}
+                    <button onClick={printTable} className="bg-green-500 text-white px-4 py-2 rounded mb-4 ml-2">
+                        Print
+                    </button>
 
-                {/* Users Table */}
-                <div className="overflow-x-auto">
-                    <table className="min-w-full bg-white border border-gray-300">
-                        <thead className="bg-gray-200 sticky top-0">
-                            <tr>
-                                <th className="p-2 text-left">Date</th>
-                                <th className="p-2 text-left">Coverage</th>
-                                <th className="p-2 text-left">Picture</th>
-                                <th className="p-2 text-left">Actions</th> {/* Actions column added back */}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {users.map((user, index) => (
-                                <tr key={index} className="border-b">
-                                    <td className="p-2">{user.date}</td>
-                                    <td className="p-2">{user.number}</td>
-                                    <td className="p-2 cursor-pointer" onClick={() => openImageModal(user.picture)}>
-                                        {user.picture ? (
-                                            <img src={user.picture} alt="User" className="h-24 w-24 object-cover" />
-                                        ) : (
-                                            "No Picture"
-                                        )}
-                                    </td>
-                                    <td className="p-2">
-                                        <button
-                                            onClick={() => openUpdateModal(index)}
-                                            className="bg-yellow-500 text-white px-2 py-1 rounded mr-1"
-                                        >
-                                            Update
-                                        </button>
-                                        <button
-                                            onClick={() => openConfirmDeleteModal(index)}
-                                            className="bg-red-500 text-white px-2 py-1 rounded"
-                                        >
-                                            Delete
-                                        </button>
-                                    </td>
+                    {/* Users Table */}
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full bg-white border border-gray-300">
+                            <thead className="bg-gray-200 sticky top-0">
+                                <tr>
+                                    <th className="p-2 text-left">Date</th>
+                                    <th className="p-2 text-left">Coverage</th>
+                                    <th className="p-2 text-left">Picture</th>
+                                    <th className="p-2 text-left">Actions</th> {/* Actions column added back */}
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {users.map((user, index) => (
+                                    <tr key={index} className="border-b">
+                                        <td className="p-2">{user.date}</td>
+                                        <td className="p-2">{user.number}</td>
+                                        <td className="p-2 cursor-pointer" onClick={() => openImageModal(user.picture)}>
+                                            {user.picture ? <img src={user.picture} alt="User" className="h-24 w-24 object-cover" /> : "No Picture"}
+                                        </td>
+                                        <td className="p-2">
+                                            <button
+                                                onClick={() => openUpdateModal(index)}
+                                                className="bg-yellow-500 text-white px-2 py-1 rounded mr-1"
+                                            >
+                                                Update
+                                            </button>
+                                            <button onClick={() => openConfirmDeleteModal(index)} className="bg-red-500 text-white px-2 py-1 rounded">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
             )}
 
             {/* Empty Div for Absences */}
@@ -444,25 +416,14 @@ const Records = () => {
                         {/* Picture Upload Field */}
                         <div className="mb-4">
                             <label className="block text-gray-700">Picture:</label>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handlePictureUpload}
-                                className="border rounded w-full py-2 px-3"
-                            />
+                            <input type="file" accept="image/*" onChange={handlePictureUpload} className="border rounded w-full py-2 px-3" />
                         </div>
 
                         <div className="flex justify-end">
-                            <button
-                                onClick={saveNewUser}
-                                className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
-                            >
+                            <button onClick={saveNewUser} className="bg-blue-500 text-white px-4 py-2 rounded mr-2">
                                 Save
                             </button>
-                            <button
-                                onClick={() => setModalOpen1(false)}
-                                className="bg-gray-500 text-white px-4 py-2 rounded"
-                            >
+                            <button onClick={() => setModalOpen1(false)} className="bg-gray-500 text-white px-4 py-2 rounded">
                                 Cancel
                             </button>
                         </div>
@@ -503,32 +464,20 @@ const Records = () => {
                         {/* Picture Upload Field */}
                         <div className="mb-4">
                             <label className="block text-gray-700">Picture:</label>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handlePictureUpload}
-                                className="border rounded w-full py-2 px-3"
-                            />
+                            <input type="file" accept="image/*" onChange={handlePictureUpload} className="border rounded w-full py-2 px-3" />
                         </div>
 
                         <div className="flex justify-end">
-                            <button
-                                onClick={saveNewUser}
-                                className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
-                            >
+                            <button onClick={saveNewUser} className="bg-blue-500 text-white px-4 py-2 rounded mr-2">
                                 Save
                             </button>
-                            <button
-                                onClick={() => setModalOpen2(false)}
-                                className="bg-gray-500 text-white px-4 py-2 rounded"
-                            >
+                            <button onClick={() => setModalOpen2(false)} className="bg-gray-500 text-white px-4 py-2 rounded">
                                 Cancel
                             </button>
                         </div>
                     </div>
                 </div>
             )}
-            
 
             {/* Modal for Updating User */}
             {updateModalOpen && (
@@ -543,9 +492,7 @@ const Records = () => {
                                 type="text"
                                 name="number"
                                 value={currentUser.number}
-                                onChange={(e) =>
-                                    setCurrentUser((prev) => ({ ...prev, number: e.target.value }))
-                                }
+                                onChange={(e) => setCurrentUser((prev) => ({ ...prev, number: e.target.value }))}
                                 className="border rounded w-full py-2 px-3"
                                 placeholder="Enter Kilo"
                             />
@@ -558,9 +505,7 @@ const Records = () => {
                                 type="date"
                                 name="date"
                                 value={currentUser.date}
-                                onChange={(e) =>
-                                    setCurrentUser((prev) => ({ ...prev, date: e.target.value }))
-                                }
+                                onChange={(e) => setCurrentUser((prev) => ({ ...prev, date: e.target.value }))}
                                 className="border rounded w-full py-2 px-3"
                             />
                         </div>
@@ -589,16 +534,10 @@ const Records = () => {
                         </div>
 
                         <div className="flex justify-end">
-                            <button
-                                onClick={updateUser}
-                                className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
-                            >
+                            <button onClick={updateUser} className="bg-blue-500 text-white px-4 py-2 rounded mr-2">
                                 Update
                             </button>
-                            <button
-                                onClick={() => setUpdateModalOpen(false)}
-                                className="bg-gray-500 text-white px-4 py-2 rounded"
-                            >
+                            <button onClick={() => setUpdateModalOpen(false)} className="bg-gray-500 text-white px-4 py-2 rounded">
                                 Cancel
                             </button>
                         </div>
@@ -613,16 +552,10 @@ const Records = () => {
                         <h2 className="text-lg font-semibold mb-4">Confirm Deletion</h2>
                         <p>Are you sure you want to delete this record?</p>
                         <div className="flex justify-end mt-4">
-                            <button
-                                onClick={deleteUser}
-                                className="bg-red-500 text-white px-4 py-2 rounded mr-2"
-                            >
+                            <button onClick={deleteUser} className="bg-red-500 text-white px-4 py-2 rounded mr-2">
                                 Delete
                             </button>
-                            <button
-                                onClick={() => setConfirmDeleteModalOpen(false)}
-                                className="bg-gray-500 text-white px-4 py-2 rounded"
-                            >
+                            <button onClick={() => setConfirmDeleteModalOpen(false)} className="bg-gray-500 text-white px-4 py-2 rounded">
                                 Cancel
                             </button>
                         </div>
@@ -635,10 +568,7 @@ const Records = () => {
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
                     <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
                         <img src={selectedImage} alt="User" className="w-full h-auto" />
-                        <button
-                            onClick={closeImageModal}
-                            className="bg-gray-500 text-white px-4 py-2 rounded mt-4"
-                        >
+                        <button onClick={closeImageModal} className="bg-gray-500 text-white px-4 py-2 rounded mt-4">
                             Close
                         </button>
                     </div>
@@ -648,4 +578,4 @@ const Records = () => {
     );
 };
 
-export default  Records;
+export default Records;

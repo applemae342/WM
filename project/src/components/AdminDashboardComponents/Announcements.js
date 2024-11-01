@@ -54,9 +54,7 @@ const Announcements = () => {
                     if (response.ok) {
                         const updatedAnnouncement = await response.json();
                         setAnnouncements((prevAnnouncements) =>
-                            prevAnnouncements.map((ann) =>
-                                ann.announcementsID === updatedAnnouncement.announcementsID ? updatedAnnouncement : ann
-                            )
+                            prevAnnouncements.map((ann) => (ann.announcementsID === updatedAnnouncement.announcementsID ? updatedAnnouncement : ann))
                         );
                         displayFeedbackMessage("Announcement updated successfully!");
                     }
@@ -113,9 +111,7 @@ const Announcements = () => {
             });
 
             if (response.ok) {
-                setAnnouncements((prevAnnouncements) =>
-                    prevAnnouncements.filter((ann) => ann.announcementsID !== announcementId)
-                );
+                setAnnouncements((prevAnnouncements) => prevAnnouncements.filter((ann) => ann.announcementsID !== announcementId));
                 displayFeedbackMessage("Announcement deleted successfully!");
             }
         } catch (error) {
@@ -193,9 +189,7 @@ const Announcements = () => {
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white rounded-lg shadow-lg p-5 w-1/3">
-                        <h2 className="text-lg font-semibold mb-4">
-                            {editingAnnouncementId ? "Edit Announcement" : "Add New Announcement"}
-                        </h2>
+                        <h2 className="text-lg font-semibold mb-4">{editingAnnouncementId ? "Edit Announcement" : "Add New Announcement"}</h2>
                         <input
                             type="text"
                             value={newAnnouncement.title}

@@ -46,18 +46,13 @@ const GetStarted = () => {
         <div className="flex h-screen font-sans">
             <Navbar />
             {/* Sidebar */}
-            <div className={`bg-gray-800 text-white shadow-md fixed z-50 h-full transition-all duration-300 ${isCollapsed ? "w-20" : "w-64"} top-[64px]`}>
+            <div
+                className={`bg-gray-800 text-white shadow-md fixed z-50 h-full transition-all duration-300 ${isCollapsed ? "w-20" : "w-64"} top-[64px]`}
+            >
                 <div className="flex flex-col h-full">
                     <div className="flex items-center justify-between p-2">
                         <button onClick={toggleSidebar} className="focus:outline-none flex items-center">
-                            <Image 
-                                src="/images/hamburgermenu.png" 
-                                alt="Menu" 
-                                width={38} 
-                                height={38} 
-                                className="mr-2 ml-4" 
-                                priority 
-                            />
+                            <Image src="/images/hamburgermenu.png" alt="Menu" width={38} height={38} className="mr-2 ml-4" priority />
                         </button>
                     </div>
                     <div className="mt-4 flex-grow">
@@ -66,39 +61,22 @@ const GetStarted = () => {
                                 className={`flex items-center cursor-pointer p-2 rounded-md transition-colors ${activeSection === "gettingStarted" ? "bg-gray-700" : "hover:bg-gray-700"}`}
                                 onClick={() => setActiveSection("gettingStarted")}
                             >
-                                <Image 
-                                    src="/images/start.png" 
-                                    alt="Getting Started"
-                                    width={30}
-                                    height={30}
-                                    className="mr-2 ml-4"
-                                />
-                                {!isCollapsed && <span className="text-lg font-open-sans">Getting Started</span>} {/* Adjusted class for font size and family */}
+                                <Image src="/images/start.png" alt="Getting Started" width={30} height={30} className="mr-2 ml-4" />
+                                {!isCollapsed && <span className="text-lg font-open-sans">Getting Started</span>}{" "}
+                                {/* Adjusted class for font size and family */}
                             </li>
                             <li
                                 className={`flex items-center cursor-pointer p-2 rounded-md transition-colors ${activeSection === "setupAccount" ? "bg-gray-700" : "hover:bg-gray-700"}`}
                                 onClick={() => setActiveSection("setupAccount")}
                             >
-                                <Image 
-                                    src="/images/account.png" 
-                                    alt="Setup Your Account"
-                                    width={37}
-                                    height={37}
-                                    className="mr-2 ml-3"
-                                />
+                                <Image src="/images/account.png" alt="Setup Your Account" width={37} height={37} className="mr-2 ml-3" />
                                 {!isCollapsed && <span className="text-lg font-open-sans">Setup Your Account</span>}
                             </li>
                             <li
                                 className={`flex items-center cursor-pointer p-2 rounded-md transition-colors ${activeSection === "addressConfig" ? "bg-gray-700" : "hover:bg-gray-700"}`}
                                 onClick={() => setActiveSection("addressConfig")}
                             >
-                                <Image 
-                                    src="/images/location.png" 
-                                    alt="Address Configuration"
-                                    width={37}
-                                    height={37}
-                                    className="mr-2 ml-3"
-                                />
+                                <Image src="/images/location.png" alt="Address Configuration" width={37} height={37} className="mr-2 ml-3" />
                                 {!isCollapsed && <span className="text-lg font-open-sans">Address Configuration</span>}
                             </li>
                         </ul>

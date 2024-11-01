@@ -9,21 +9,21 @@ const About = () => {
                 <div
                     className="absolute bg-gradient-to-r from-blue-500 to-green-400 opacity-60 rounded-full"
                     style={{
-                        width: '800px',
-                        height: '800px',
-                        top: '-100px',
-                        left: '-200px',
-                        zIndex: '-1',
+                        width: "800px",
+                        height: "800px",
+                        top: "-100px",
+                        left: "-200px",
+                        zIndex: "-1",
                     }}
                 ></div>
                 <div
                     className="absolute bg-gradient-to-r from-blue-600 to-purple-400 opacity-40 rounded-full"
                     style={{
-                        width: '600px',
-                        height: '600px',
-                        top: '200px',
-                        right: '-100px',
-                        zIndex: '-1',
+                        width: "600px",
+                        height: "600px",
+                        top: "200px",
+                        right: "-100px",
+                        zIndex: "-1",
                     }}
                 ></div>
             </div>
@@ -31,8 +31,9 @@ const About = () => {
             {/* About Text Section */}
             <div className="text-center mb-6 max-w-md mx-auto z-10 relative font-sans">
                 <h2 className="text-3xl font-bold text-gray-800 mb-3">About Us</h2>
-                <p className="text-gray-700 leading-relaxed" style={{ fontSize: '20px' }}>
-                    Welcome to the Waste Management Tracking System! We are dedicated to revolutionizing waste management through innovative web-based solutions designed to optimize waste collection processes, enhance efficiency, and minimize environmental impact.
+                <p className="text-gray-700 leading-relaxed" style={{ fontSize: "20px" }}>
+                    Welcome to the Waste Management Tracking System! We are dedicated to revolutionizing waste management through innovative web-based
+                    solutions designed to optimize waste collection processes, enhance efficiency, and minimize environmental impact.
                 </p>
             </div>
 
@@ -52,7 +53,9 @@ const About = () => {
                         <div className="bg-white bg-opacity-70 p-6 rounded-lg max-w-md shadow-lg font-sans">
                             <h2 className="text-2xl font-bold mb-4">Vision</h2>
                             <p className="text-base">
-                                We envision a future where waste management is efficient, transparent, and environmentally conscious. By leveraging technology and engaging stakeholders, we aim to reduce missed pickups, enhance communication, and optimize waste management practices for the benefit of communities and the environment.
+                                We envision a future where waste management is efficient, transparent, and environmentally conscious. By leveraging
+                                technology and engaging stakeholders, we aim to reduce missed pickups, enhance communication, and optimize waste
+                                management practices for the benefit of communities and the environment.
                             </p>
                         </div>
 
@@ -60,7 +63,9 @@ const About = () => {
                         <div className="bg-white bg-opacity-70 p-6 rounded-lg max-w-md shadow-lg font-sans">
                             <h2 className="text-2xl font-bold mb-4">Mission</h2>
                             <p className="text-base">
-                                Our mission is to optimize waste collection processes, ensure timely pickups, and minimize environmental impact. We strive to streamline operations, promote resource efficiency, and foster environmental sustainability through transparent communication and user-friendly interfaces.
+                                Our mission is to optimize waste collection processes, ensure timely pickups, and minimize environmental impact. We
+                                strive to streamline operations, promote resource efficiency, and foster environmental sustainability through
+                                transparent communication and user-friendly interfaces.
                             </p>
                         </div>
                     </div>
@@ -70,7 +75,8 @@ const About = () => {
                         <div className="bg-white bg-opacity-70 p-6 rounded-lg max-w-2xl shadow-2xl font-sans">
                             <h2 className="text-2xl font-bold mb-4">Our Goals</h2>
                             <p className="text-base">
-                                Our goal is to keep improving waste management by using the latest technologies to make waste collection more efficient and eco-friendly. We aim to:
+                                Our goal is to keep improving waste management by using the latest technologies to make waste collection more
+                                efficient and eco-friendly. We aim to:
                             </p>
                             <ul className="list-disc list-inside">
                                 <li>Reduce the environmental impact of waste collection.</li>
@@ -79,9 +85,7 @@ const About = () => {
                                 <li>Work with local governments and communities for more sustainable waste disposal.</li>
                                 <li>Provide clear, easy-to-understand reports and tools for users.</li>
                             </ul>
-                            <p className="text-base mt-4">
-                                By achieving these goals, we hope to help create a cleaner and more sustainable future.
-                            </p>
+                            <p className="text-base mt-4">By achieving these goals, we hope to help create a cleaner and more sustainable future.</p>
                         </div>
                     </div>
                 </div>
