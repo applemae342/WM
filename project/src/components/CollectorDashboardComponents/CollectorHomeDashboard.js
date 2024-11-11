@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BellIcon, ElipsisIcon } from "@/components/heroIcons/Icons";
 import Modal from "@/components/Modal";
-import GraphView from "@/components/GraphView";
 import LeftView from "@/components/LeftView";
 
 const CollectorHomeDashboard = ({ onViewAnnouncements }) => {
