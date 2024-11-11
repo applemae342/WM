@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Navbar from "@/components/Navbar";
+import SignInNavbar from "../components/SignInNavbar"; // Adjust the path as needed
 import { UserIcon, LockClosed } from "@/components/heroIcons/Icons";
 import axios from "axios";
 
@@ -40,7 +40,7 @@ const SignIn = () => {
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 relative font-sans">
-            <Navbar />
+            <SignInNavbar />
             {/* Adding Circular Backgrounds */}
             <div className="absolute top-0 left-0 w-64 h-64 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 z-0" />
             <div className="absolute top-20 right-0 w-96 h-96 bg-teal-200 rounded-full mix-blend-multiply filter blur-2xl opacity-70 z-0" />

@@ -45,7 +45,7 @@ const Navbar = ({ homeTitle, aboutTitle, contactTitle }) => {
                     {/* Reduced margin for tighter alignment */}
                     Waste Management Tracking System
                 </Link>
-                <div className="hidden md:flex space-x-8 ml-auto">
+                <div className="hidden md:flex space-x-7 ml-auto mr-8">
                     {" "}
                     {/* Right-aligned links */}
                     <Link href="#home" passHref>
@@ -61,7 +61,7 @@ const Navbar = ({ homeTitle, aboutTitle, contactTitle }) => {
                         <span className={`cursor-pointer ${activeLink === "signIn" ? "text-blue-500" : "text-black"} text-lg`}>Sign In</span>
                     </Link>
                 </div>
-                <div className="md:hidden">
+                <div className="md:hidden ml-20">
                     <button onClick={toggleMenu} className="text-gray-500 hover:text-gray-900 focus:outline-none">
                         <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
                             <path fillRule="evenodd" clipRule="evenodd" d="M3 5h18v2H3V5zm0 6h18v2H3v-2zm0 6h18v2H3v-2z" />

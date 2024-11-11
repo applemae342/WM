@@ -3,7 +3,7 @@ import DashboardCollectionRoutes from "@/components/AdminDashboardComponents/Add
 import DashboardHome from "@/components/AdminDashboardComponents/DashboardHome";
 import DashboardResidentsStatus from "@/components/AdminDashboardComponents/DashboardResidentsStatus";
 import DashboardUsers from "@/components/AdminDashboardComponents/DashboardUsers";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Announcements from "@/components/AdminDashboardComponents/Announcements";
 import Image from "next/image"; // Import Image for the hamburger icon
 
@@ -32,6 +32,28 @@ const AdminDashboard = () => {
         }
     };
 
+    // Effect to handle screen resizing
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 768) { // Adjust the width threshold as needed
+                setIsCollapsed(true);
+            } else {
+                setIsCollapsed(false);
+            }
+        };
+
+        // Add event listener
+        window.addEventListener("resize", handleResize);
+
+        // Call handler initially to set the correct state on load
+        handleResize();
+
+        // Cleanup the event listener on component unmount
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
     return (
         <div className="flex h-screen font-sans">
             <AdminNavBar /> {/* Include the AdminNavBar at the top */}
@@ -42,11 +64,8 @@ const AdminDashboard = () => {
                 <div className="flex flex-col h-full">
                     {/* Hamburger Menu Button */}
                     <div className="flex items-center justify-between p-2">
-                        {" "}
-                        {/* Adjusted padding */}
                         <button onClick={toggleSidebar} className="focus:outline-none flex items-center">
-                            <Image src="/images/hamburgermenu.png" alt="Menu" width={38} height={38} className="mr-2 ml-4" priority />{" "}
-                            {/* Hamburger image now exactly 30x30 */}
+                            <Image src="/images/hamburgermenu.png" alt="Menu" width={38} height={38} className="mr-2 ml-4" priority />
                         </button>
                     </div>
                     {/* Sidebar Content */}
@@ -56,39 +75,36 @@ const AdminDashboard = () => {
                                 className={`flex items-center cursor-pointer p-2 rounded-md transition duration-200 ${view === "home" ? "bg-gray-600" : "hover:bg-gray-600"}`}
                                 onClick={() => setView("home")}
                             >
-                                <Image src="/images/home.png" alt="Home" width={30} height={30} className="mr-2 ml-4" /> {/* Home image */}
-                                {!isCollapsed && <span className="text-lg ml-3">Home</span>} {/* Text for Home */}
+                                <Image src="/images/home.png" alt="Home" width={30} height={30} className="mr-2 ml-4" />
+                                {!isCollapsed && <span className="text-lg ml-3">Home</span>}
                             </li>
                             <li
                                 className={`flex items-center cursor-pointer p-2 rounded-md transition duration-200 ${view === "users" ? "bg-gray-600" : "hover:bg-gray-600"}`}
                                 onClick={() => setView("users")}
                             >
-                                <Image src="/images/users.png" alt="Users" width={30} height={30} className="mr-2 ml-4" /> {/* Users image */}
-                                {!isCollapsed && <span className="text-lg ml-3">Users</span>} {/* Text for Users */}
+                                <Image src="/images/users.png" alt="Users" width={30} height={30} className="mr-2 ml-4" />
+                                {!isCollapsed && <span className="text-lg ml-3">Users</span>}
                             </li>
                             <li
                                 className={`flex items-center cursor-pointer p-2 rounded-md transition duration-200 ${view === "residentsStatus" ? "bg-gray-600" : "hover:bg-gray-600"}`}
                                 onClick={() => setView("residentsStatus")}
                             >
-                                <Image src="/images/records.png" alt="Residents Status" width={30} height={30} className="mr-2 ml-4" />{" "}
-                                {/* Residents Status image */}
-                                {!isCollapsed && <span className="text-lg ml-3">Records</span>} {/* Text for Residents Status */}
+                                <Image src="/images/records.png" alt="Residents Status" width={30} height={30} className="mr-2 ml-4" />
+                                {!isCollapsed && <span className="text-lg ml-3">Records</span>}
                             </li>
                             <li
                                 className={`flex items-center cursor-pointer p-2 rounded-md transition duration-200 ${view === "collectionRoutes" ? "bg-gray-600" : "hover:bg-gray-600"}`}
                                 onClick={() => setView("collectionRoutes")}
                             >
-                                <Image src="/images/location.png" alt="Collection Routes" width={37} height={37} className="mr-2 ml-3" />{" "}
-                                {/* Collection Routes image */}
-                                {!isCollapsed && <span className="text-lg ml-2">Collection Routes</span>} {/* Text for Collection Routes */}
+                                <Image src="/images/location.png" alt="Collection Routes" width={37} height={37} className="mr-2 ml-3" />
+                                {!isCollapsed && <span className="text-lg ml-2">Collection Routes</span>}
                             </li>
                             <li
                                 className={`flex items-center cursor-pointer p-2 rounded-md transition duration-200 ${view === "announcements" ? "bg-gray-600" : "hover:bg-gray-600"}`}
                                 onClick={() => setView("announcements")}
                             >
-                                <Image src="/images/announcement.png" alt="Announcements" width={29} height={29} className="mr-2 ml-4" />{" "}
-                                {/* Announcements image */}
-                                {!isCollapsed && <span className="text-lg ml-3">Announcements</span>} {/* Text for Announcements */}
+                                <Image src="/images/announcement.png" alt="Announcements" width={29} height={29} className="mr-2 ml-4" />
+                                {!isCollapsed && <span className="text-lg ml-3">Announcements</span>}
                             </li>
                         </ul>
                     </div>
