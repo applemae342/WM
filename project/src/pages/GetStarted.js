@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import Navbar from "@/components/Navbar";
+//import Navbar from "@/components/Navbar";
+import SignInNavbar from "../components/SignInNavbar"; // Adjust the path as needed
 import GettingStarted from "@/components/getStartedComponents/gettingStarted";
 import SetupAccount from "@/components/getStartedComponents/setUpAccount";
 import AddressConfig from "@/components/getStartedComponents/addressConfig";
@@ -44,7 +45,7 @@ const GetStarted = () => {
 
     return (
         <div className="flex h-screen font-sans">
-            <Navbar />
+            <SignInNavbar />
             {/* Sidebar */}
             <div
                 className={`bg-gray-800 text-white shadow-md fixed z-50 h-full transition-all duration-300 ${isCollapsed ? "w-20" : "w-64"} top-[64px]`}

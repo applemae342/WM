@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BellIcon, ElipsisIcon } from "@/components/heroIcons/Icons";
 import Modal from "@/components/Modal";
+import GraphView from "@/components/GraphView";
 import LeftView from "@/components/LeftView";
 
 const CollectorHomeDashboard = ({ onViewAnnouncements }) => {
@@ -58,7 +59,7 @@ const CollectorHomeDashboard = ({ onViewAnnouncements }) => {
     // Handle delete notification
     const handleDelete = () => {
         if (selectedNotification) {
-            setNotifications(notifications.filter((n) => n.id !== selectedNotification.id));
+            setNotifications(notifications.filter((n)=> n.id !== selectedNotification.id));
             setSelectedNotification(null);
         }
     };
