@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BellIcon, ElipsisIcon } from "@/components/heroIcons/Icons";
 import Modal from "@/components/Modal";
 import GraphView from "@/components/GraphView";
@@ -7,27 +7,56 @@ import LeftView from "@/components/LeftView";
 const CollectorHomeDashboard = ({ onViewAnnouncements }) => {
     const [isModalOpen, setModalOpen] = useState(false);
     const [selectedNotification, setSelectedNotification] = useState(null);
-    const [notifications, setNotifications] = useState([
+    const [truckUsername, setTruckUsername] = useState(""); // Initialize the truckUsername state
+    const [truckData, setTruckData] = useState({}); // Initialize truckData to store truck details
+    const [notifications, setNotifications] = useState([ 
         { id: 1, message: "Collection date is Available", time: "2 minutes ago" },
         { id: 2, message: "Your profile was updated.", time: "5 minutes ago" },
         { id: 3, message: "You have 3 new notifications.", time: "10 minutes ago" },
     ]);
 
+    // Fetch truckUsername, truckData from localStorage on component mount
+    useEffect(() => {
+        // Get truck credentials from localStorage
+        const truckId = localStorage.getItem("truckId");
+        const plateNumber = localStorage.getItem("plateNumber");
+        const truckUsername = localStorage.getItem("truckUsername");
+        const description = localStorage.getItem("description");
+        const routesID = localStorage.getItem("routesID");
+
+        // Check if data exists in localStorage
+        if (truckId && plateNumber && truckUsername) {
+            setTruckData({
+                truckId,
+                plateNumber,
+                truckUsername,
+                description,
+                routesID
+            });
+            setTruckUsername(truckUsername); // Set truckUsername
+        }
+
+    }, []); // Empty dependency array to run only once on mount
+
+    // Open and close modal
     const openModal = () => setModalOpen(true);
     const closeModal = () => {
         setSelectedNotification(null);
         setModalOpen(false);
     };
 
+    // Handle notification click
     const handleNotificationClick = (notification) => {
         onViewAnnouncements();
         closeModal();
     };
 
+    // Handle ellipsis click for actions on notifications
     const handleEllipsisClick = (notification) => {
         setSelectedNotification(notification);
     };
 
+    // Handle delete notification
     const handleDelete = () => {
         if (selectedNotification) {
             setNotifications(notifications.filter((n) => n.id !== selectedNotification.id));
@@ -39,8 +68,8 @@ const CollectorHomeDashboard = ({ onViewAnnouncements }) => {
         <div className="p-5 font-sans text-[24px]">
             <div className="flex justify-between items-center mb-5">
                 <div>
-                    <p className="text-[24px] text-[#2E8ECA] ">
-                        <b>Welcome Jhonryl Martinez</b>
+                    <p className="text-[24px] text-[#2E8ECA]">
+                        <b>Welcome {truckUsername}</b>
                     </p>
                     <p className="text-gray-600 mt-1 text-[18px]">You can now proceed to your work!</p>
                 </div>
@@ -58,6 +87,24 @@ const CollectorHomeDashboard = ({ onViewAnnouncements }) => {
                 </div>
             </div>
 
+            {/* Truck Information Section */}
+            <div className="mt-5">
+                <h3 className="text-xl font-bold">Truck Information</h3>
+                <div className="mt-3">
+                    {truckData && Object.keys(truckData).length > 0 ? (
+                        <div className="mt-6 space-y-4">
+                            <div><strong>Truck ID:</strong> {truckData.truckId}</div>
+                            <div><strong>Plate Number:</strong> {truckData.plateNumber}</div>
+                            <div><strong>Description:</strong> {truckData.description}</div>
+                            <div><strong>Routes ID:</strong> {truckData.routesID}</div>
+                        </div>
+                    ) : (
+                        <p>Loading truck data...</p>
+                    )}
+                </div>
+            </div>
+
+            {/* Notification Modal */}
             <Modal isOpen={isModalOpen} onClose={closeModal} title="Notifications">
                 {notifications.map((notification) => (
                     <div
@@ -81,16 +128,13 @@ const CollectorHomeDashboard = ({ onViewAnnouncements }) => {
                     </div>
                 ))}
                 {selectedNotification && (
-                    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-                        <div className="bg-white p-4 rounded shadow-lg">
-                            <p className="text-gray-700 mb-2">Actions for this notification:</p>
-                            <button onClick={handleDelete} className="text-red-500 hover:text-red-700 block mb-2">
-                                Delete
-                            </button>
-                            <button onClick={() => setSelectedNotification(null)} className="text-gray-500 hover:text-gray-700">
-                                Cancel
-                            </button>
-                        </div>
+                    <div className="mt-4">
+                        <button
+                            onClick={handleDelete}
+                            className="text-red-500 hover:underline"
+                        >
+                            Delete Notification
+                        </button>
                     </div>
                 )}
             </Modal>

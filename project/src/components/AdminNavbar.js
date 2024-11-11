@@ -30,7 +30,7 @@ const AdminNavBar = () => {
                                     <Link href="/profile">My Profile</Link>
                                 </li>
                                 <li>
-                                    <Link href="/">Log Out</Link>
+                                    <Link href="/sign_in_page">Log Out</Link>
                                 </li>
                             </ul>
                         </div>
