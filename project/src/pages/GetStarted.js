@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-//import Navbar from "@/components/Navbar";
+import React, { useState, useEffect } from "react";
 import SignInNavbar from "../components/SignInNavbar"; // Adjust the path as needed
 import GettingStarted from "@/components/getStartedComponents/gettingStarted";
 import SetupAccount from "@/components/getStartedComponents/setUpAccount";
@@ -9,6 +8,28 @@ import Image from "next/image";
 const GetStarted = () => {
     const [activeSection, setActiveSection] = useState("gettingStarted");
     const [isCollapsed, setIsCollapsed] = useState(false); // State for sidebar collapse
+
+    // Function to handle screen resize and update sidebar collapse state
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 768) {
+                setIsCollapsed(true); // Collapse the sidebar for smaller screens
+            } else {
+                setIsCollapsed(false); // Expand the sidebar for larger screens
+            }
+        };
+
+        // Attach resize event listener
+        window.addEventListener("resize", handleResize);
+
+        // Call it initially to set the correct state based on the current screen size
+        handleResize();
+
+        // Cleanup event listener
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
 
     const handleStartClick = () => {
         setActiveSection("setupAccount");
@@ -63,8 +84,7 @@ const GetStarted = () => {
                                 onClick={() => setActiveSection("gettingStarted")}
                             >
                                 <Image src="/images/start.png" alt="Getting Started" width={30} height={30} className="mr-2 ml-4" />
-                                {!isCollapsed && <span className="text-lg font-open-sans">Getting Started</span>}{" "}
-                                {/* Adjusted class for font size and family */}
+                                {!isCollapsed && <span className="text-lg font-open-sans">Getting Started</span>}
                             </li>
                             <li
                                 className={`flex items-center cursor-pointer p-2 rounded-md transition-colors ${activeSection === "setupAccount" ? "bg-gray-700" : "hover:bg-gray-700"}`}
@@ -84,7 +104,7 @@ const GetStarted = () => {
                     </div>
                 </div>
             </div>
-            <div className={`flex-1 p-6 bg-gray-100 mt-[64px] transition-all duration-300 ${isCollapsed ? "ml-20" : "ml-64"}`}>{renderContent()}</div>
+            <div className={`flex-1 p-6 -100 mt-[64px] transition-all duration-300 ${isCollapsed ? "ml-20" : "ml-64"}`}>{renderContent()}</div>
         </div>
     );
 };

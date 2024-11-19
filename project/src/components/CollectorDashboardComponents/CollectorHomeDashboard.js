@@ -23,6 +23,7 @@ const CollectorHomeDashboard = ({ onViewAnnouncements }) => {
         const truckUsername = localStorage.getItem("truckUsername");
         const description = localStorage.getItem("description");
         const routesID = localStorage.getItem("routesID");
+        
 
         // Check if data exists in localStorage
         if (truckId && plateNumber && truckUsername) {

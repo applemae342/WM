@@ -3,9 +3,9 @@ import Navbar from "@/components/Navbar";
 
 const About = () => {
     return (
-        <div className="relative">
+        <div className="">
             {/* Circular Gradient Background */}
-            <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute inset-0 overflow-hidden md: h-[60rem]">
                 <div
                     className="absolute bg-gradient-to-r from-blue-500 to-green-400 opacity-60 rounded-full"
                     style={{
@@ -17,11 +17,11 @@ const About = () => {
                     }}
                 ></div>
                 <div
-                    className="absolute bg-gradient-to-r from-blue-600 to-purple-400 opacity-40 rounded-full"
+                    className="absolute bg-gradient-to-r from-blue-600 to-purple-400 opacity-40 rounded-full border border-red-500"
                     style={{
                         width: "600px",
                         height: "600px",
-                        top: "200px",
+                        top: "140px",
                         right: "-100px",
                         zIndex: "-1",
                     }}
@@ -29,63 +29,45 @@ const About = () => {
             </div>
 
             {/* About Text Section */}
-            <div className="text-center mb-6 max-w-md mx-auto z-10 relative font-sans">
-                <h2 className="text-3xl font-bold text-gray-800 mb-3">About Us</h2>
-                <p className="text-gray-700 leading-relaxed" style={{ fontSize: "20px" }}>
-                    Welcome to the Waste Management Tracking System! We are dedicated to revolutionizing waste management through innovative web-based
-                    solutions designed to optimize waste collection processes, enhance efficiency, and minimize environmental impact.
+            <div className="text-center mb-12 max-w-3xl mx-auto mt-10 font-sans px-4 sm:px-6 lg:px-8">
+                <h2 className="text-3xl sm:text-4xl font-semibold text-gray-800 mb-6">About Us</h2>
+                <p className="text-lg text-gray-700 leading-relaxed sm:text-xl">
+                    Welcome to the Waste Management Tracking System! We are dedicated to revolutionizing waste management through
+                    innovative web-based solutions designed to optimize waste collection processes, enhance efficiency, and minimize
+                    environmental impact.
                 </p>
             </div>
 
-            {/* Image Section with Vision, Mission, and Additional Section */}
-            <div className="relative z-10">
+            {/* Image Section with Vision and Mission */}
+            <div className="relative z-10 flex justify-center px-4 sm:px-6">
                 <img
                     src="/images/bg.png" // Path to the uploaded image
                     alt="Waste Management Process"
-                    className="w-full h-auto object-cover"
+                    className="w-full h-[20rem] sm:h-[30rem] object-cover rounded-lg"
                 />
 
-                {/* Overlay for Vision, Mission, and Additional Section */}
-                <div className="absolute top-0 left-0 right-0 flex flex-col justify-start items-center h-full px-10 z-10">
+                {/* Overlay for Vision and Mission */}
+                <div className="absolute top-0 left-0 right-0 flex flex-col justify-start items-center h-full px-6 sm:px-10 z-10">
                     {/* First row with Vision and Mission */}
-                    <div className="flex justify-around items-start w-full mt-10">
+                    <div className="flex flex-col sm:flex-row justify-between items-center w-full mt-12 md:mt-16 gap-6 sm:gap-12">
                         {/* Vision Box */}
-                        <div className="bg-white bg-opacity-70 p-6 rounded-lg max-w-md shadow-lg font-sans">
-                            <h2 className="text-2xl font-bold mb-4">Vision</h2>
-                            <p className="text-base">
-                                We envision a future where waste management is efficient, transparent, and environmentally conscious. By leveraging
-                                technology and engaging stakeholders, we aim to reduce missed pickups, enhance communication, and optimize waste
-                                management practices for the benefit of communities and the environment.
+                        <div className="bg-white bg-opacity-80 p-6 rounded-lg max-w-xs sm:max-w-md shadow-xl font-sans">
+                            <h2 className="text-2xl font-semibold mb-4 text-gray-800">Vision</h2>
+                            <p className="text-base text-gray-700">
+                                We envision a future where waste management is efficient, transparent, and environmentally conscious.
+                                By leveraging technology and engaging stakeholders, we aim to reduce missed pickups, enhance communication,
+                                and optimize waste management practices for the benefit of communities and the environment.
                             </p>
                         </div>
 
                         {/* Mission Box */}
-                        <div className="bg-white bg-opacity-70 p-6 rounded-lg max-w-md shadow-lg font-sans">
-                            <h2 className="text-2xl font-bold mb-4">Mission</h2>
-                            <p className="text-base">
-                                Our mission is to optimize waste collection processes, ensure timely pickups, and minimize environmental impact. We
-                                strive to streamline operations, promote resource efficiency, and foster environmental sustainability through
-                                transparent communication and user-friendly interfaces.
+                        <div className="bg-white bg-opacity-80 p-6 rounded-lg max-w-xs sm:max-w-md shadow-xl font-sans">
+                            <h2 className="text-2xl font-semibold mb-4 text-gray-800">Mission</h2>
+                            <p className="text-base text-gray-700">
+                                Our mission is to optimize waste collection processes, ensure timely pickups, and minimize environmental
+                                impact. We strive to streamline operations, promote resource efficiency, and foster environmental
+                                sustainability through transparent communication and user-friendly interfaces.
                             </p>
-                        </div>
-                    </div>
-
-                    {/* Second row with Our Goals */}
-                    <div className="w-full flex justify-center mt-48">
-                        <div className="bg-white bg-opacity-70 p-6 rounded-lg max-w-2xl shadow-2xl font-sans">
-                            <h2 className="text-2xl font-bold mb-4">Our Goals</h2>
-                            <p className="text-base">
-                                Our goal is to keep improving waste management by using the latest technologies to make waste collection more
-                                efficient and eco-friendly. We aim to:
-                            </p>
-                            <ul className="list-disc list-inside">
-                                <li>Reduce the environmental impact of waste collection.</li>
-                                <li>Make sure no pickups are missed with better tracking systems.</li>
-                                <li>Increase recycling through better sorting methods and awareness.</li>
-                                <li>Work with local governments and communities for more sustainable waste disposal.</li>
-                                <li>Provide clear, easy-to-understand reports and tools for users.</li>
-                            </ul>
-                            <p className="text-base mt-4">By achieving these goals, we hope to help create a cleaner and more sustainable future.</p>
                         </div>
                     </div>
                 </div>
