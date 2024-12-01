@@ -21,11 +21,7 @@ export default function Home() {
 
                 {/* About Section */}
                 <div className="flex justify-center">
-                    <section
-                        id="about"
-                        className="h-full mt-24 rounded-lg bg-white w-full sm:w-[80rem] px-4 sm:px-8"
-                        data-aos="fade-right"
-                    >
+                    <section id="about" className="h-full mt-24 rounded-lg bg-white w-full sm:w-[80rem] px-4 sm:px-8" data-aos="fade-right">
                         <About />
                     </section>
                 </div>

@@ -1,54 +1,104 @@
-import React, { useState } from "react";
-import { BellIcon, ElipsisIcon } from "../heroIcons/Icons";
-import Modal from "../Modal";
+import React, { useState, useEffect } from "react";
+import { BellIcon, ElipsisIcon } from "@/components/heroIcons/Icons";
+import Modal from "@/components/Modal";
+import GraphView from "@/components/GraphView";
+import LeftView from "@/components/LeftView";
 
-const ResidentsHomeDashboard = () => {
+const ResidentsHomeDashboard = ({ onViewAnnouncements }) => {
     const [isModalOpen, setModalOpen] = useState(false);
+    const [selectedNotification, setSelectedNotification] = useState(null);
+    const [loggedUsername, setLoggedUsername] = useState("");
+    const [truckData, setTruckData] = useState(null); // State for truck details
+    const [notifications, setNotifications] = useState([
+        { id: 1, message: "Collection date is Available", time: "2 minutes ago" },
+        { id: 2, message: "Your profile was updated.", time: "5 minutes ago" },
+        { id: 3, message: "You have 3 new notifications.", time: "10 minutes ago" },
+    ]);
+
+    // Fetch loggedUsername and truckData from localStorage on component mount
+    useEffect(() => {
+        const userID = localStorage.getItem("userID");
+        const role = localStorage.getItem("role");
+        const username = localStorage.getItem("username"); // Consistent key usage from SignIn
+
+        if (userID && role && username) {
+            setTruckData({
+                userID,
+                role,
+                username,
+            });
+            setLoggedUsername(username); // Set consistent logged username
+        }
+    }, []);
 
     const openModal = () => setModalOpen(true);
-    const closeModal = () => setModalOpen(false);
+    const closeModal = () => {
+        setSelectedNotification(null);
+        setModalOpen(false);
+    };
 
-    const notifications = [
-        { message: "Nenia murag bata", time: "2 minutes ago" },
-        { message: "Kapoy nag code.", time: "5 minutes ago" },
-        { message: "Gutom.", time: "10 minutes ago" },
-    ];
+    const handleNotificationClick = (notification) => {
+        onViewAnnouncements();
+        closeModal();
+    };
 
-    // Example notification count
-    const notificationCount = notifications.length;
+    const handleEllipsisClick = (notification) => {
+        setSelectedNotification(notification);
+    };
+
+    const handleDelete = () => {
+        if (selectedNotification) {
+            setNotifications((prevNotifications) => prevNotifications.filter((n) => n.id !== selectedNotification.id));
+            setSelectedNotification(null);
+        }
+    };
 
     return (
-        <div className="font-sans">
-            <div className="flex justify-between items-center p-4">
-                <p className="text-[#2E8ECA] font-bold text-2xl">Welcome Jhonryl Martinez</p>
-                <div className="relative">
-                    <button onClick={openModal} className="text-blue-500 p-2" aria-label="View Notifications">
-                        <BellIcon className="w-6 h-6" />
-                        {notificationCount > 0 && (
-                            <span className="absolute top-0 right-0 block w-4 h-4 text-xs font-bold text-white bg-red-500 rounded-full flex items-center justify-center">
-                                {notificationCount}
-                            </span>
-                        )}
-                    </button>
+        <div className="p-5 font-sans text-[24px]">
+            <div className="flex justify-between items-center mb-5">
+                <div>
+                    <p className="text-[24px] text-green-700">
+                        <b>Welcome {loggedUsername}</b>
+                    </p>
+                    <p className="text-gray-600 mt-1 text-[18px]">You can now proceed to your work!</p>
                 </div>
+                <button onClick={openModal} className="text-blue-500">
+                    <BellIcon />
+                </button>
             </div>
 
-            {/* Modal for notifications */}
+          
+
+
+            {/* Notification Modal */}
             <Modal isOpen={isModalOpen} onClose={closeModal} title="Notifications">
-                {notifications.length > 0 ? (
-                    notifications.map((notification, index) => (
-                        <div key={index} className="flex flex-col p-4 border-b">
-                            <div className="flex items-center justify-between">
-                                <p className="text-gray-700">{notification.message}</p>
-                                <button className="text-gray-500 hover:text-gray-700">
-                                    <ElipsisIcon />
-                                </button>
-                            </div>
-                            <p className="text-gray-500 text-sm mt-2">{notification.time}</p>
+                {notifications.map((notification) => (
+                    <div
+                        key={notification.id}
+                        className="flex flex-col p-4 border-b cursor-pointer"
+                        onClick={() => handleNotificationClick(notification)}
+                    >
+                        <div className="flex items-center justify-between">
+                            <p className="text-gray-700">{notification.message}</p>
+                            <button
+                                className="text-gray-500 hover:text-gray-700"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleEllipsisClick(notification);
+                                }}
+                            >
+                                <ElipsisIcon />
+                            </button>
                         </div>
-                    ))
-                ) : (
-                    <p className="text-gray-700 p-4">No new notifications yet.</p>
+                        <p className="text-gray-500 text-sm mt-2">{notification.time}</p>
+                    </div>
+                ))}
+                {selectedNotification && (
+                    <div className="mt-4">
+                        <button onClick={handleDelete} className="text-red-500 hover:underline">
+                            Delete Notification
+                        </button>
+                    </div>
                 )}
             </Modal>
         </div>

@@ -17,17 +17,12 @@ const OtherOptions = () => {
             <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-lg z-10 relative">
                 <div className="text-center mb-8 font-sans">
                     <h2 className="text-3xl font-semibold text-gray-800">Other Options</h2>
-                    <p className="text-md text-gray-600 leading-relaxed mt-2">
-                        Need assistance or want to get in touch with us? Here's how:
-                    </p>
+                    <p className="text-md text-gray-600 leading-relaxed mt-2">Need assistance or want to get in touch with us? Here's how:</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="mb-4">
-                        <label
-                            htmlFor="message"
-                            className="block text-sm font-medium text-gray-700 font-sans"
-                        >
+                        <label htmlFor="message" className="block text-sm font-medium text-gray-700 font-sans">
                             Questions or other concerns:
                         </label>
                         <textarea
@@ -52,36 +47,14 @@ const OtherOptions = () => {
                     <div className="text-center mt-12 mb-8 font-sans">
                         <p className="text-lg font-semibold">Follow us on:</p>
                         <div className="flex justify-center items-center mt-4 space-x-8">
-                            <a
-                                href="https://www.facebook.com"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label="Follow us on Facebook"
-                            >
-                                <img
-                                    src="/images/facebook.png"
-                                    alt="Facebook"
-                                    className="w-10 h-10 transition-transform transform hover:scale-110"
-                                />
+                            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Facebook">
+                                <img src="/images/facebook.png" alt="Facebook" className="w-10 h-10 transition-transform transform hover:scale-110" />
                             </a>
-                            <a
-                                href="https://www.instagram.com"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label="Follow us on Instagram"
-                            >
-                                <img
-                                    src="/images/instag.jpg"
-                                    alt="Instagram"
-                                    className="w-10 h-10 transition-transform transform hover:scale-110"
-                                />
+                            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram">
+                                <img src="/images/instag.jpg" alt="Instagram" className="w-10 h-10 transition-transform transform hover:scale-110" />
                             </a>
                             <a href="mailto:your.email@example.com" aria-label="Send us an email">
-                                <img
-                                    src="/images/email.png"
-                                    alt="Email"
-                                    className="w-10 h-10 transition-transform transform hover:scale-110"
-                                />
+                                <img src="/images/email.png" alt="Email" className="w-10 h-10 transition-transform transform hover:scale-110" />
                             </a>
                         </div>
                     </div>

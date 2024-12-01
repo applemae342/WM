@@ -14,12 +14,13 @@ const Announcements = () => {
                     throw new Error("Network response was not ok");
                 }
                 const data = await response.json();
-                setAnnouncements(data.sort((a, b) => new Date(b.timeSubmitted) - new Date(a.timeSubmitted))); // Sort from latest to oldest
+                // Sort announcements from latest to oldest
+                setAnnouncements(data.sort((a, b) => new Date(b.timeSubmitted) - new Date(a.timeSubmitted)));
             } catch (error) {
                 console.error("Error fetching announcements:", error);
                 setError("Failed to load announcements.");
             } finally {
-                setLoading(false); // Stop loading state
+                setLoading(false);
             }
         };
 
@@ -29,38 +30,60 @@ const Announcements = () => {
     // Render announcements or loading/error state
     const renderContent = () => {
         if (loading) {
-            return <p>Loading announcements...</p>;
+            return (
+                <p className="text-center text-gray-500">
+                    Loading announcements...
+                </p>
+            );
         }
 
         if (error) {
-            return <p className="text-red-500">{error}</p>;
+            return (
+                <p className="text-center text-red-500">
+                    {error}
+                </p>
+            );
         }
 
         return (
-            <div className="announcements-list">
+            <div className="flex flex-col gap-6">
                 {announcements.length === 0 ? (
-                    <p>No announcements added yet.</p>
+                    <p className="text-center text-gray-700">
+                        No announcements available at the moment.
+                    </p>
                 ) : (
-                    <div className="list-disc pl-5">
-                        {announcements.map((announcement) => (
-                            <div key={announcement.announcementsID} className="py-3 px-4 mb-2 border-b border-gray-300">
-                                <h3 className="font-semibold text-[#2E8ECA]">{announcement.announcementsTitle}</h3>
-                                <p className="text-gray-700">{announcement.announcementBody}</p>
-                                <p className="text-gray-500 text-sm">{new Date(announcement.timeSubmitted).toLocaleString()}</p>
-                            </div>
-                        ))}
-                    </div>
+                    announcements.map((announcement) => (
+                        <div 
+                            key={announcement.announcementsID} 
+                            className="bg-white border rounded-lg shadow-md p-5 flex flex-col"
+                        >
+                            <h3 className="text-xl font-bold mb-2">
+                                {announcement.announcementsTitle}
+                            </h3>
+                            <p className="text-gray-700 mb-3">
+                                {announcement.announcementBody}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                                {new Date(announcement.timeSubmitted).toLocaleString()}
+                            </p>
+                        </div>
+                    ))
                 )}
             </div>
         );
     };
 
     return (
-        <div className="p-5 bg-white rounded-lg shadow-md">
-            <header className="text-center mb-4">
-                <h1 className="text-2xl font-bold text-[#4BAA6C]">View Announcements</h1>
-            </header>
-            {renderContent()}
+        <div className="p-2 min-h-screen">
+            <div className="max-w-4xl mx-auto p-6">
+                <header className="text-center mb-6">
+                    <h1 className="text-3xl font-bold text-gray-800">Announcements</h1>
+                    <p className="text-gray-600">
+                        Stay updated with the latest announcements.
+                    </p>
+                </header>
+                {renderContent()}
+            </div>
         </div>
     );
 };

@@ -35,7 +35,8 @@ const AdminDashboard = () => {
     // Effect to handle screen resizing
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth < 768) { // Adjust the width threshold as needed
+            if (window.innerWidth < 768) {
+                // Adjust the width threshold as needed
                 setIsCollapsed(true);
             } else {
                 setIsCollapsed(false);

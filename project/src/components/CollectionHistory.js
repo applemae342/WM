@@ -1,29 +1,97 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 
 const CollectionHistory = () => {
-    // Sample data for places, dates, and times in Cebu with status
-    const data = [
-        { routeName: "Magellan's Cross", date: "2024-09-10", time: "09:00 AM" },
-        { routeName: "Fort San Pedro", date: "2024-09-11", time: "10:30 AM" },
-        { routeName: "Taoist Temple", date: "2024-09-12", time: "12:00 PM" },
-        { routeName: "SM City Cebu", date: "2024-09-13", time: "02:00 PM" },
-        { routeName: "Ayala Center Cebu", date: "2024-09-14", time: "04:00 PM" },
-        { routeName: "Cebu Metropolitan Cathedral", date: "2024-09-15", time: "06:00 PM" },
-        { routeName: "Cebu Metropolitan Cathedral", date: "2024-09-15", time: "06:00 PM" },
-        { routeName: "Cebu Metropolitan Cathedral", date: "2024-09-15", time: "06:00 PM" },
-        { routeName: "Cebu Metropolitan Cathedral", date: "2024-09-15", time: "06:00 PM" },
-        { routeName: "Cebu Metropolitan Cathedral", date: "2024-09-15", time: "06:00 PM" },
-        { routeName: "Cebu Metropolitan Cathedral", date: "2024-09-15", time: "06:00 PM" },
-        { routeName: "Cebu Metropolitan Cathedral", date: "2024-09-15", time: "06:00 PM" },
-        { routeName: "Cebu Metropolitan Cathedral", date: "2024-09-15", time: "06:00 PM" },
-        { routeName: "Cebu Metropolitan Cathedral", date: "2024-09-15", time: "06:00 PM" },
-    ];
-
-    // State for search query
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
+    const [expandedGroups, setExpandedGroups] = useState({});
+    const [modalOpen, setModalOpen] = useState(false);
+    const [selectedLocation, setSelectedLocation] = useState(null);
 
-    // Filtered data based on search query
-    const filteredData = data.filter((item) => item.routeName.toLowerCase().includes(searchQuery.toLowerCase()));
+    // Fetch data from the API
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get("http://localhost:8000/API/history/getAll");
+                const sortedData = response.data.sort(
+                    (a, b) => new Date(b.date) - new Date(a.date)
+                );
+                setData(sortedData);
+            } catch (err) {
+                console.error(err);
+                setError("Failed to fetch data.");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
+
+    // Delete records by date
+    const handleDeleteByDate = async (date) => {
+        try {
+            const response = await axios.delete(`http://localhost:8000/API/history/delete/${date}`);
+            alert(response.data.message);
+            setData((prevData) => prevData.filter((item) => {
+                const itemDate = new Date(item.date).toISOString().split("T")[0];
+                return itemDate !== date;
+            }));
+        } catch (err) {
+            console.error(err);
+            alert("Failed to delete records for the selected date.");
+        }
+    };
+
+    // Filter data based on search query
+    const filteredData = data.filter(
+        (item) =>
+            item.latitude?.toString().includes(searchQuery) ||
+            item.longitude?.toString().includes(searchQuery) ||
+            item.date?.includes(searchQuery)
+    );
+
+    // Group data by date (YYYY-MM-DD format)
+    const groupedData = filteredData.reduce((acc, item) => {
+        const dateKey = new Date(item.date).toISOString().split("T")[0];
+        if (!acc[dateKey]) {
+            acc[dateKey] = [];
+        }
+        acc[dateKey].push(item);
+        return acc;
+    }, {});
+
+    // Toggle group visibility
+    const toggleGroup = (dateKey) => {
+        setExpandedGroups((prev) => ({
+            ...prev,
+            [dateKey]: !prev[dateKey],
+        }));
+    };
+
+    // Handle modal open
+    const handleViewClick = (latitude, longitude) => {
+        setSelectedLocation({ latitude, longitude });
+        setModalOpen(true);
+    };
+
+    // Close modal
+    const handleCloseModal = () => {
+        setModalOpen(false);
+        setSelectedLocation(null);
+    };
+
+    // Custom marker icon
+    const customMarker = new L.Icon({
+        iconUrl: "/path/to/your/custom-marker.png",
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32],
+    });
 
     return (
         <div className="mx-auto p-6 bg-white rounded-lg shadow-lg">
@@ -31,7 +99,7 @@ const CollectionHistory = () => {
             <div className="mb-4">
                 <input
                     type="text"
-                    placeholder="Search by place..."
+                    placeholder="Search by latitude, longitude, or date..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-[15rem] p-2 border border-gray-300 rounded-md outline-none"
@@ -39,38 +107,114 @@ const CollectionHistory = () => {
             </div>
             <div className="overflow-x-auto">
                 <div className="max-h-[500px] overflow-y-auto">
-                    {" "}
-                    {/* Set a fixed height and enable vertical scrolling */}
-                    <table className="min-w-full bg-white border border-gray-200 rounded-lg">
-                        <thead className="bg-gray-200 text-gray-700 uppercase text-sm sticky top-0">
-                            {" "}
-                            {/* Make header sticky */}
-                            <tr>
-                                <th className="px-6 py-3 border-b border-gray-300 text-center">Route Name</th>
-                                <th className="px-6 py-3 border-b border-gray-300 text-center">Date</th>
-                                <th className="px-6 py-3 border-b border-gray-300 text-center">Time</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredData.length === 0 ? (
-                                <tr>
-                                    <td colSpan="4" className="px-6 py-4 text-center text-gray-500">
-                                        No results found
-                                    </td>
-                                </tr>
-                            ) : (
-                                filteredData.map((item, index) => (
-                                    <tr key={index} className={`hover:bg-gray-50 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"}`}>
-                                        <td className="px-6 py-4 border-b border-gray-300 text-center">{item.routeName}</td>
-                                        <td className="px-6 py-4 border-b border-gray-300 text-center">{item.date}</td>
-                                        <td className="px-6 py-4 border-b border-gray-300 text-center">{item.time}</td>
-                                    </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
+                    {loading ? (
+                        <p className="text-center text-gray-500">Loading...</p>
+                    ) : error ? (
+                        <p className="text-center text-red-500">{error}</p>
+                    ) : Object.keys(groupedData).length === 0 ? (
+                        <p className="text-center text-gray-500">No results found.</p>
+                    ) : (
+                        Object.entries(groupedData).map(([dateKey, items]) => (
+                            <div key={dateKey} className="mb-4 border border-gray-300 rounded-lg">
+                                <div
+                                    className="flex justify-between items-center bg-gray-200 p-3 cursor-pointer"
+                                    onClick={() => toggleGroup(dateKey)}
+                                >
+                                    <div>
+                                        <span className="font-bold">{dateKey}</span>
+                                        <span className="ml-2 text-gray-600">
+                                            ({items.length} record{items.length > 1 ? "s" : ""})
+                                        </span>
+                                    </div>
+                                    <div className="flex space-x-2">
+                                        <button className="bg-gray-600 text-white px-3 py-1 rounded-md">
+                                            {expandedGroups[dateKey] ? "Hide" : "Show"}
+                                        </button>
+                                        <button
+                                            onClick={() => handleDeleteByDate(dateKey)}
+                                            className="bg-red-600 text-white px-3 py-1 rounded-md"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                                {expandedGroups[dateKey] && (
+                                    <table className="min-w-full bg-white">
+                                        <thead>
+                                            <tr className="bg-gray-100 text-gray-700 uppercase text-sm">
+                                                <th className="px-6 py-3 text-left">Username</th>
+                                                <th className="px-6 py-3 text-left">View</th>
+                                                <th className="px-6 py-3 text-left">Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {items.map((item, index) => (
+                                                <tr
+                                                    key={index}
+                                                    className={`hover:bg-gray-50 ${
+                                                        index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                                                    }`}
+                                                >
+                                                    <td className="px-6 py-4">{item.userName}</td>
+                                                    <td className="px-6 py-4">
+                                                        <button
+                                                            onClick={() =>
+                                                                handleViewClick(item.latitude, item.longitude)
+                                                            }
+                                                            className="bg-gray-600 text-white px-3 py-1 rounded-md"
+                                                        >
+                                                            Click here to View
+                                                        </button>
+                                                    </td>
+                                                    <td className="px-6 py-4">
+                                                        {new Date(item.date).toLocaleTimeString()}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                )}
+                            </div>
+                        ))
+                    )}
                 </div>
             </div>
+
+            {/* Custom Modal to show the map */}
+            {modalOpen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                    <div className="bg-white p-4 rounded-lg shadow-lg w-[80%] max-w-4xl relative">
+                        <button
+                            onClick={handleCloseModal}
+                            className="absolute top-2 right-2 text-gray-600 hover:text-gray-900 text-2xl"
+                        >
+                            &times;
+                        </button>
+                        <h2 className="text-center text-xl font-semibold mb-4">Location View</h2>
+                        {selectedLocation && (
+                            <MapContainer
+                                center={[selectedLocation.latitude, selectedLocation.longitude]}
+                                zoom={13}
+                                style={{ height: "400px", width: "100%" }}
+                            >
+                                <TileLayer
+                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                />
+                                <Marker
+                                    position={[selectedLocation.latitude, selectedLocation.longitude]}
+                                    icon={customMarker}
+                                >
+                                    <Popup>
+                                        Latitude: {selectedLocation.latitude} <br />
+                                        Longitude: {selectedLocation.longitude}
+                                    </Popup>
+                                </Marker>
+                            </MapContainer>
+                        )}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

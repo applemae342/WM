@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BellIcon, ElipsisIcon } from "@/components/heroIcons/Icons";
 import Modal from "@/components/Modal";
-import GraphView from "@/components/GraphView";
-import LeftView from "@/components/LeftView";
 
 const CollectorHomeDashboard = ({ onViewAnnouncements }) => {
     const [isModalOpen, setModalOpen] = useState(false);
@@ -66,44 +64,22 @@ const CollectorHomeDashboard = ({ onViewAnnouncements }) => {
     };
 
     return (
-        <div className="p-5 font-sans text-[24px]">
+        <div className="p-5 font-sans text-[24px] border">
             <div className="flex justify-between items-center mb-5">
-                <div>
-                    <p className="text-[24px] text-[#2E8ECA]">
+                <div className="">
+                    <p className="text-[24px] text-green-700">
                         <b>Welcome {truckUsername}</b>
                     </p>
-                    <p className="text-gray-600 mt-1 text-[18px]">You can now proceed to your work!</p>
+                    <p className="text-gray-600  text-[18px] mt-5">You can now proceed to your work!</p>
                 </div>
-                <button onClick={openModal} className="text-blue-500">
+               <div>
+               <button onClick={openModal} className="text-blue-500">
                     <BellIcon />
                 </button>
+               </div>
             </div>
 
-            <div className="flex gap-4 mt-5">
-                <div className="flex-1 border p-4">
-                    <LeftView />
-                </div>
-                <div className="flex-1 border p-4">
-                    <GraphView />
-                </div>
-            </div>
-
-            {/* Truck Information Section */}
-            <div className="mt-5">
-                <h3 className="text-xl font-bold">Truck Information</h3>
-                <div className="mt-3">
-                    {truckData && Object.keys(truckData).length > 0 ? (
-                        <div className="mt-6 space-y-4">
-                            <div><strong>Truck ID:</strong> {truckData.truckId}</div>
-                            <div><strong>Plate Number:</strong> {truckData.plateNumber}</div>
-                            <div><strong>Description:</strong> {truckData.description}</div>
-                            <div><strong>Routes ID:</strong> {truckData.routesID}</div>
-                        </div>
-                    ) : (
-                        <p>Loading truck data...</p>
-                    )}
-                </div>
-            </div>
+           
 
             {/* Notification Modal */}
             <Modal isOpen={isModalOpen} onClose={closeModal} title="Notifications">
