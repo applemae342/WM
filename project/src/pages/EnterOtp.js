@@ -25,7 +25,6 @@ const EnterOtp = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log("Entered OTP: ", otp.join(""));
-        // Handle OTP verification logic here
     };
 
     return (
