@@ -1,35 +1,89 @@
-import SignInNavbar from "@/components/SignInNavbar";
 import React, { useState } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
+import SignInNavbar from "@/components/SignInNavbar";
 
 const EnterOtp = () => {
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+    const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
 
     const handleChange = (e, index) => {
-        let value = e.target.value;
+        const value = e.target.value.replace(/[^0-9]/g, ""); // Allow only digits
+        otp[index] = value;
 
-        if (value.length === 1) {
-            otp[index] = value;
-            setOtp([...otp]);
-            if (index < 5) {
-                document.getElementById(`otp-input-${index + 1}`).focus();
-            }
-        } else {
-            otp[index] = "";
-            setOtp([...otp]);
-            if (index > 0) {
-                document.getElementById(`otp-input-${index - 1}`).focus();
-            }
+        setOtp([...otp]);
+
+        // Focus management
+        if (value.length === 1 && index < 5) {
+            document.getElementById(`otp-input-${index + 1}`).focus();
+        } else if (!value && index > 0) {
+            document.getElementById(`otp-input-${index - 1}`).focus();
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Entered OTP: ", otp.join(""));
+        setError("");
+        setIsLoading(true);
+
+        const otpEntered = otp.join("");
+
+        if (otpEntered.length !== 6) {
+            setError("Please enter the full 6-digit OTP.");
+            setIsLoading(false);
+            return;
+        }
+
+        const { email } = router.query;
+
+        if (!email) {
+            setError("Email is missing. Please start the process again.");
+            setIsLoading(false);
+            return;
+        }
+
+        try {
+            const response = await axios.post("http://localhost:8000/API/otp/verify-otp", {
+                email,
+                otp: otpEntered,
+                newPassword: "", // Placeholder for the newPassword field
+            });
+
+            if (response.data.success) {
+                router.push("/changePassword");
+            } else {
+                setError("Invalid OTP. Please try again.");
+            }
+        } catch (err) {
+            console.error("Error verifying OTP:", err);
+            setError("An error occurred while verifying OTP. Please try again.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleResendOtp = async () => {
+        const { email } = router.query;
+
+        if (!email) {
+            setError("Email is missing. Please start the process again.");
+            return;
+        }
+
+        try {
+            await axios.post("http://localhost:8000/API/otp/send-email", { email });
+            alert("A new OTP has been sent to your email.");
+        } catch (err) {
+            console.error("Error resending OTP:", err);
+            setError("Failed to resend OTP. Please try again later.");
+        }
     };
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 relative font-sans">
-              <SignInNavbar />
+            <SignInNavbar />
             <div className="absolute top-0 left-0 w-64 h-64 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 z-0" />
             <div className="absolute top-20 right-0 w-96 h-96 bg-teal-200 rounded-full mix-blend-multiply filter blur-2xl opacity-70 z-0" />
 
@@ -56,33 +110,30 @@ const EnterOtp = () => {
                             ))}
                         </div>
 
-                        {/* Verify OTP Button */}
+                        {error && (
+                            <div className="text-red-600 text-sm text-center mt-2">
+                                {error}
+                            </div>
+                        )}
+
                         <div>
                             <button
                                 type="submit"
                                 className="w-full py-3 bg-[#2E8ECA] text-white font-bold text-lg rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                disabled={isLoading}
                             >
-                                Verify OTP
+                                {isLoading ? "Verifying..." : "Verify OTP"}
                             </button>
                         </div>
 
                         {/* Resend OTP */}
                         <div className="text-center">
                             <button
+                                type="button"
                                 className="text-sm text-blue-600 hover:underline"
-                                onClick={() => alert("Resend OTP feature")}
+                                onClick={handleResendOtp}
                             >
                                 Resend OTP
-                            </button>
-                        </div>
-
-                        {/* Back Button */}
-                        <div className="text-center mt-4">
-                            <button
-                                onClick={() => window.history.back()}
-                                className="text-sm text-blue-600 hover:underline"
-                            >
-                                Back
                             </button>
                         </div>
                     </form>

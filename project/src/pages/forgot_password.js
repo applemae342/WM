@@ -7,35 +7,48 @@ import Link from "next/link";
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState("");
-    const [error, setError] = useState(""); // To handle errors
+    const [error, setError] = useState(""); // State for error message
     const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("Email:", email);
-    
+
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!email) {
-            setError("Please enter a valid email.");
+            setError("Email is required.");
             return;
         }
-    
+        if (!emailRegex.test(email)) {
+            setError("Please enter a valid email address.");
+            return;
+        }
+        setError(""); // Clear error if email is valid
+
         try {
-            // Send a request to the backend to send OTP to the email
             const response = await axios.post("http://localhost:8000/API/otp/send-email", { email });
-            
-            console.log('Backend Response:', response.data); // Log the response from the backend
-    
-            // If the OTP is sent successfully, redirect to the OTP verification page
+
+            console.log('Backend Response:', response.data);
+
             if (response.data.success) {
                 router.push("/EnterOtp");
             } else {
-                setError("Failed to send OTP. Please try again.");
+                // Check for specific error messages from the backend
+                if (response.data.error === "Email does not exist") {
+                    setError("This email does not match our records.");
+                } else if (response.data.error === "The email address is not valid.") {
+                    setError("Please enter a valid email address.");
+                } else {
+                    setError(response.data.error || "Failed to send OTP. Please try again.");
+                }
             }
         } catch (err) {
-            console.error("Error occurred:", err); // Log the error if any
+            console.error("Error occurred:", err);
             setError("An error occurred. Please try again.");
         }
     };
+
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 relative font-sans">
             <SignInNavbar />
@@ -64,7 +77,11 @@ const ForgotPassword = () => {
                             />
                         </div>
 
-                        {error && <p className="text-red-500 text-sm">{error}</p>}
+                        {error && (
+                            <div className="text-red-600 text-sm text-center mt-2">
+                                {error}
+                            </div>
+                        )}
 
                         <div>
                             <button

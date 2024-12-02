@@ -39,7 +39,7 @@ app.use('/API/Route',routesname)
 
 
 app.listen(8000, () => {
-    console.log("Server started on port 8000");
+    consolACe.log("Server started on port 8000");
 });
 //localhost listener is 8000
 
