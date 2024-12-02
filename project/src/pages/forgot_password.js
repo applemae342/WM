@@ -1,31 +1,48 @@
-import { EmailIcon } from "@/components/heroIcons/Icons";
-import Navbar from "@/components/Navbar";
-import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
+import axios from "axios"; // Make sure axios is installed in your project
+import { EmailIcon } from "@/components/heroIcons/Icons";
 import SignInNavbar from "@/components/SignInNavbar";
+import Link from "next/link";
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState("");
+    const [error, setError] = useState(""); // To handle errors
     const router = useRouter();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("Email:", email);
-
-        // Redirect to the Enter OTP page
-        router.push("/EnterOtp");
+    
+        if (!email) {
+            setError("Please enter a valid email.");
+            return;
+        }
+    
+        try {
+            // Send a request to the backend to send OTP to the email
+            const response = await axios.post("http://localhost:8000/API/otp/send-email", { email });
+            
+            console.log('Backend Response:', response.data); // Log the response from the backend
+    
+            // If the OTP is sent successfully, redirect to the OTP verification page
+            if (response.data.success) {
+                router.push("/EnterOtp");
+            } else {
+                setError("Failed to send OTP. Please try again.");
+            }
+        } catch (err) {
+            console.error("Error occurred:", err); // Log the error if any
+            setError("An error occurred. Please try again.");
+        }
     };
-
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 relative font-sans">
-             <SignInNavbar />
-            {/* Adding Circular Backgrounds */}
+            <SignInNavbar />
             <div className="absolute top-0 left-0 w-64 h-64 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 z-0" />
             <div className="absolute top-20 right-0 w-96 h-96 bg-teal-200 rounded-full mix-blend-multiply filter blur-2xl opacity-70 z-0" />
 
             <div className="flex justify-center items-center relative z-10 mt-20">
-                {/* Forgot Password Form */}
                 <div className="bg-white rounded-md shadow-lg p-8 w-full max-w-xl">
                     <h2 className="text-center text-2xl font-semibold text-gray-800 mb-6">Forgot Password?</h2>
                     <form onSubmit={handleSubmit} className="space-y-6">
@@ -46,6 +63,9 @@ const ForgotPassword = () => {
                                 placeholder="Email"
                             />
                         </div>
+
+                        {error && <p className="text-red-500 text-sm">{error}</p>}
+
                         <div>
                             <button
                                 type="submit"
