@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import axios from "axios"; // Make sure axios is installed in your project
+import axios from "axios"; // Ensure axios is installed
 import { EmailIcon } from "@/components/heroIcons/Icons";
 import SignInNavbar from "@/components/SignInNavbar";
 import Link from "next/link";
@@ -8,6 +8,7 @@ import Link from "next/link";
 const ForgotPassword = () => {
     const [email, setEmail] = useState("");
     const [error, setError] = useState(""); // State for error message
+    const [isLoading, setIsLoading] = useState(false); // To handle loading state
     const router = useRouter();
 
     const handleSubmit = async (e) => {
@@ -24,7 +25,9 @@ const ForgotPassword = () => {
             setError("Please enter a valid email address.");
             return;
         }
+
         setError(""); // Clear error if email is valid
+        setIsLoading(true); // Start loading state
 
         try {
             const response = await axios.post("http://localhost:8000/API/otp/send-email", { email });
@@ -32,6 +35,10 @@ const ForgotPassword = () => {
             console.log('Backend Response:', response.data);
 
             if (response.data.success) {
+                // Store email in sessionStorage
+                if (typeof window !== "undefined") {
+                    sessionStorage.setItem("email", email);
+                }
                 router.push("/EnterOtp");
             } else {
                 // Check for specific error messages from the backend
@@ -46,6 +53,8 @@ const ForgotPassword = () => {
         } catch (err) {
             console.error("Error occurred:", err);
             setError("An error occurred. Please try again.");
+        } finally {
+            setIsLoading(false); // End loading state
         }
     };
 
@@ -86,9 +95,10 @@ const ForgotPassword = () => {
                         <div>
                             <button
                                 type="submit"
+                                disabled={isLoading}
                                 className="w-full py-3 bg-[#2E8ECA] text-white font-bold text-lg rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
-                                Submit
+                                {isLoading ? "Sending..." : "Submit"}
                             </button>
                         </div>
                         <div className="text-center">

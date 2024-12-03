@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import axios from "axios"; // Make sure axios is installed
+import axios from "axios";
 import SignInNavbar from "@/components/SignInNavbar";
 
 const ChangePassword = () => {
@@ -13,25 +13,36 @@ const ChangePassword = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // Check if passwords match
         if (password !== confirmPassword) {
             setError("Passwords do not match.");
             return;
         }
 
+        // Check password length
         if (password.length < 6) {
             setError("Password must be at least 6 characters.");
             return;
         }
 
-        try {
-            // Send the new password to the backend
-            const response = await axios.post("http://localhost:8000/API/password/change", { password });
+        // Retrieve the user's email from sessionStorage
+        const email = sessionStorage.getItem("email");
+        if (!email) {
+            setError("Email is required.");
+            return;
+        }
 
+        try {
+            // Send the new password and email to the backend for password change
+            const response = await axios.post("http://localhost:8000/API/otp/password-change", { email, password });
+
+            // Handle the response from the backend
             if (response.data.success) {
                 setSuccess("Password changed successfully!");
-                // Redirect to login page after success
+                alert("Password changed successfully!");
+
                 setTimeout(() => {
-                    router.push("/sign_in_page");
+                    router.push("/sign_in_page"); // Redirect to the sign-in page after success
                 }, 2000);
             } else {
                 setError("Failed to change password. Please try again.");
