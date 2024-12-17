@@ -11,11 +11,19 @@ const MapView = () => {
     const mapRef = useRef(null); // Ref to hold the map instance
     const [currentLocation, setCurrentLocation] = useState({ latitude: null, longitude: null });
     const [sharingLocation, setSharingLocation] = useState(false); // Track whether location is being shared
-    const [showModal, setShowModal] = useState(true); // Control modal visibility
+    const [showModal, setShowModal] = useState(false); // Control modal visibility
     const [lastHistoryTime, setLastHistoryTime] = useState(null); // Track the last record creation time
 
     useEffect(() => {
         setIsClient(typeof window !== "undefined");
+
+        // Check if the user has already accepted the terms
+        const hasAcceptedTerms = localStorage.getItem("hasAcceptedTerms");
+
+        // If the terms have not been accepted, show the modal
+        if (!hasAcceptedTerms) {
+            setShowModal(true);
+        }
     }, []);
 
     const fetchFlagData = async () => {
@@ -57,7 +65,8 @@ const MapView = () => {
 
         return () => clearInterval(intervalId);
     }, []);
-  // Original flag update logic
+
+    // Original flag update logic
     useEffect(() => {
         const intervalId = setInterval(async () => {
             const truckId = localStorage.getItem("truckId");
@@ -185,6 +194,8 @@ const MapView = () => {
     };
 
     const handleModalClose = () => {
+        // Mark terms as accepted in localStorage
+        localStorage.setItem("hasAcceptedTerms", "true");
         setShowModal(false);
     };
 

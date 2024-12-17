@@ -1,16 +1,17 @@
-// src/pages/dashboard/CollectorDashboard.js
-
 import CollectorHomeDashboard from "@/components/CollectorDashboardComponents/CollectorHomeDashboard";
 import CollectorLocationDashboard from "@/components/CollectorDashboardComponents/ShareLocation";
-import CollectorAnnouncementsDashboard from "@/components/CollectorDashboardComponents/ViewAnnouncements";
-import AdminNavBar from "@/components/AdminNavbar";
+import CollectorNavBar from "@/components/collectorNavbar";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 const CollectorDashboard = () => {
     const [view, setView] = useState("home");
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const [truckData, setTruckData] = useState(null);
+    const router = useRouter();
 
+    // Toggle sidebar visibility
     const toggleSidebar = () => {
         setIsCollapsed(!isCollapsed);
     };
@@ -23,8 +24,6 @@ const CollectorDashboard = () => {
         switch (view) {
             case "home":
                 return <CollectorHomeDashboard onViewAnnouncements={handleViewAnnouncements} />;
-            case "announcement":
-                return <CollectorAnnouncementsDashboard />;
             case "yourLocation":
                 return <CollectorLocationDashboard />;
             default:
@@ -32,9 +31,20 @@ const CollectorDashboard = () => {
         }
     };
 
+    // Check if the truck is logged in using session data
+    useEffect(() => {
+        const truckSession = JSON.parse(sessionStorage.getItem("truckSession"));
+        if (truckSession) {
+            setTruckData(truckSession); // Set truck data from session
+        } else {
+            // Redirect to login if no session data is found
+            router.push("/sign_in_page"); 
+        }
+    }, [router]);
+
     return (
         <div className="flex h-screen font-sans">
-            <AdminNavBar />
+            <CollectorNavBar />
             <div
                 className={`bg-gray-800 text-white shadow-md fixed z-50 h-full transition-all duration-300 ${isCollapsed ? "w-23" : "w-64"} top-[64px]`}
             >
@@ -53,13 +63,7 @@ const CollectorDashboard = () => {
                                 <Image src="/images/home.png" alt="Home" width={30} height={30} className="mr-2 ml-4" />
                                 {!isCollapsed && <span className="text-lg ml-3 font-sans">Home</span>}
                             </li>
-                            <li
-                                className={`flex items-center cursor-pointer p-2 rounded-md transition duration-200 ${view === "announcement" ? "bg-gray-600" : "hover:bg-gray-600"}`}
-                                onClick={() => setView("announcement")}
-                            >
-                                <Image src="/images/announcement.png" alt="Announcements" width={29} height={29} className="mr-2 ml-4" />
-                                {!isCollapsed && <span className="text-lg ml-3 font-sans">Announcements</span>}
-                            </li>
+                            
                             <li
                                 className={`flex items-center cursor-pointer p-2 rounded-md transition duration-200 ${view === "yourLocation" ? "bg-gray-600" : "hover:bg-gray-600"}`}
                                 onClick={handleViewAnnouncements}
@@ -72,7 +76,16 @@ const CollectorDashboard = () => {
                 </div>
             </div>
             <div className={`flex-1 p-6 bg-gray-100 transition-all duration-300 ${isCollapsed ? "ml-16" : "ml-64"} mt-[60px]`}>
-                <div className="border border-gray-200 p-4 bg-white rounded-lg shadow-sm mt-4 font-sans">{renderView()}</div>
+                {/* Display truck data if available */}
+                {truckData ? (
+                    <div className="border border-gray-200 p-4 bg-white rounded-lg shadow-sm mt-4 font-sans">
+                        {renderView()}
+                    </div>
+                ) : (
+                    <div className="border border-gray-200 p-4 bg-white rounded-lg shadow-sm mt-4 font-sans">
+                        <p>Loading...</p>
+                    </div>
+                )}
             </div>
         </div>
     );

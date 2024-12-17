@@ -123,7 +123,7 @@ const Announcements = () => {
     return (
         <div className="announcements-container p-5 max-w-4xl mx-auto">
             <header className="text-center mb-4">
-                <h1 className="text-3xl font-bold text-gray-800">Manage Announcements</h1>
+                <h1 className="text-3xl font-bold text-[#000000]">Manage Announcements</h1>
                 {feedbackMessage && (
                     <div className="bg-green-100 text-green-800 py-2 px-4 rounded mb-4">
                         {feedbackMessage}
@@ -137,7 +137,7 @@ const Announcements = () => {
                         setNewAnnouncement({ title: "", body: "" });
                         setEditingAnnouncementId(null);
                     }}
-                    className="flex items-center bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-all"
+                    className="flex items-center bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 transition-all"
                 >
                     <AddIcon className="w-5 h-5" />
                     <span className="ml-2">Add Announcement</span>
@@ -184,41 +184,45 @@ const Announcements = () => {
                 )}
             </div>
             {isModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-96">
-                        <h2 className="text-lg font-semibold mb-4">
-                            {editingAnnouncementId ? "Edit Announcement" : "Add Announcement"}
-                        </h2>
-                        <input
-                            type="text"
-                            value={newAnnouncement.title}
-                            onChange={(e) => setNewAnnouncement({ ...newAnnouncement, title: e.target.value })}
-                            placeholder="Enter title"
-                            className="w-full p-2 mb-4 border rounded focus:ring focus:ring-blue-500"
-                        />
-                        <textarea
-                            value={newAnnouncement.body}
-                            onChange={(e) => setNewAnnouncement({ ...newAnnouncement, body: e.target.value })}
-                            placeholder="Enter announcement body"
-                            className="w-full p-2 mb-4 border rounded focus:ring focus:ring-blue-500"
-                        ></textarea>
-                        <div className="flex justify-end">
-                            <button
-                                onClick={handleAddOrEditAnnouncement}
-                                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-                            >
-                                {editingAnnouncementId ? "Update" : "Add"}
-                            </button>
-                            <button
-                                onClick={() => setIsModalOpen(false)}
-                                className="ml-3 bg-gray-300 py-2 px-4 rounded hover:bg-gray-400"
-                            >
-                                Cancel
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div
+      className="bg-light-green p-6 rounded-xl shadow-lg border-t-4 border-green-600 w-11/12 sm:w-96"
+      style={{ backgroundColor: "#f0fdf4" }}
+    >
+      <h2 className="text-xl font-bold mb-6 text-green-800 text-center">
+        {editingAnnouncementId ? "Edit Announcement" : "Add Announcement"}
+      </h2>
+      <input
+        type="text"
+        value={newAnnouncement.title}
+        onChange={(e) => setNewAnnouncement({ ...newAnnouncement, title: e.target.value })}
+        placeholder="Enter title"
+        className="w-full border-2 border-green-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 mb-4"
+      />
+      <textarea
+        value={newAnnouncement.body}
+        onChange={(e) => setNewAnnouncement({ ...newAnnouncement, body: e.target.value })}
+        placeholder="Enter announcement body"
+        className="w-full border-2 border-green-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 mb-6 resize-none h-32"
+      ></textarea>
+      <div className="flex justify-end space-x-4">
+        <button
+          onClick={handleAddOrEditAnnouncement}
+          className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
+        >
+          {editingAnnouncementId ? "Update" : "Add"}
+        </button>
+        <button
+          onClick={() => setIsModalOpen(false)}
+          className="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 transition"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
         </div>
     );
 };

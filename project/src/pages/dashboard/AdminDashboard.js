@@ -1,15 +1,18 @@
 import AdminNavBar from "@/components/AdminNavbar";
 import DashboardCollectionRoutes from "@/components/AdminDashboardComponents/AddRoutes";
 import DashboardHome from "@/components/AdminDashboardComponents/DashboardHome";
-import DashboardResidentsStatus from "@/components/AdminDashboardComponents/DashboardResidentsStatus";
+import DashboardResidentsStatus from "@/components/AdminDashboardComponents/Records";
 import DashboardUsers from "@/components/AdminDashboardComponents/DashboardUsers";
 import { useState, useEffect } from "react";
 import Announcements from "@/components/AdminDashboardComponents/Announcements";
 import Image from "next/image"; // Import Image for the hamburger icon
+import { useRouter } from "next/router"; // For redirecting
 
 const AdminDashboard = () => {
     const [view, setView] = useState("home");
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false); // Track authentication
+    const router = useRouter();
 
     const toggleSidebar = () => {
         setIsCollapsed(!isCollapsed);
@@ -54,6 +57,22 @@ const AdminDashboard = () => {
             window.removeEventListener("resize", handleResize);
         };
     }, []);
+
+    // Effect to check session and authentication status
+    useEffect(() => {
+        // Check if session exists (you could use cookies or localStorage)
+        const isLoggedIn = sessionStorage.getItem("userID") && sessionStorage.getItem("username");
+        if (!isLoggedIn) {
+            // If not logged in, redirect to the sign-in page
+            router.push("/sign_in_page");
+        } else {
+            setIsAuthenticated(true); // Set authentication status
+        }
+    }, [router]); // The effect will run when the component mounts
+
+    if (!isAuthenticated) {
+        return null; // Optionally, you can show a loading state while checking authentication
+    }
 
     return (
         <div className="flex h-screen font-sans">

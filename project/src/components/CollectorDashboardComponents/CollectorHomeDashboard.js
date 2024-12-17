@@ -73,9 +73,7 @@ const CollectorHomeDashboard = ({ onViewAnnouncements }) => {
                     <p className="text-gray-600  text-[18px] mt-5">You can now proceed to your work!</p>
                 </div>
                <div>
-               <button onClick={openModal} className="text-blue-500">
-                    <BellIcon />
-                </button>
+               
                </div>
             </div>
 

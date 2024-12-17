@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import dynamic from "next/dynamic"; // Import dynamic
 import "leaflet/dist/leaflet.css";
-import L from "leaflet";
+
+// Dynamically import MapContainer, TileLayer, Marker, and Popup components
+const MapContainer = dynamic(() => import("react-leaflet").then(mod => mod.MapContainer), { ssr: false });
+const TileLayer = dynamic(() => import("react-leaflet").then(mod => mod.TileLayer), { ssr: false });
+const Marker = dynamic(() => import("react-leaflet").then(mod => mod.Marker), { ssr: false });
+const Popup = dynamic(() => import("react-leaflet").then(mod => mod.Popup), { ssr: false });
 
 const CollectionHistory = () => {
     const [data, setData] = useState([]);
@@ -12,6 +17,24 @@ const CollectionHistory = () => {
     const [expandedGroups, setExpandedGroups] = useState({});
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedLocation, setSelectedLocation] = useState(null);
+    const [isClient, setIsClient] = useState(false); // Track if we're on the client-side
+    const [customMarkerIcon, setCustomMarkerIcon] = useState(null); // State for the custom marker icon
+
+    // Set isClient to true once the component mounts
+    useEffect(() => {
+        setIsClient(true);
+        // Load the custom marker icon on the client-side
+        if (typeof window !== "undefined") {
+            const L = require("leaflet");
+            const icon = new L.Icon({
+                iconUrl: "/path/to/your/custom-marker.png", // Set the path to your marker image
+                iconSize: [32, 32],
+                iconAnchor: [16, 32],
+                popupAnchor: [0, -32],
+            });
+            setCustomMarkerIcon(icon); // Save the icon to state
+        }
+    }, []);
 
     // Fetch data from the API
     useEffect(() => {
@@ -85,21 +108,13 @@ const CollectionHistory = () => {
         setSelectedLocation(null);
     };
 
-    // Custom marker icon
-    const customMarker = new L.Icon({
-        iconUrl: "/path/to/your/custom-marker.png",
-        iconSize: [32, 32],
-        iconAnchor: [16, 32],
-        popupAnchor: [0, -32],
-    });
-
     return (
         <div className="mx-auto p-6 bg-white rounded-lg shadow-lg">
             <h1 className="text-2xl text-center mb-8 text-gray-800">Collection History</h1>
             <div className="mb-4">
                 <input
                     type="text"
-                    placeholder="Search by latitude, longitude, or date..."
+                    placeholder="Search by date"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-[15rem] p-2 border border-gray-300 rounded-md outline-none"
@@ -181,7 +196,7 @@ const CollectionHistory = () => {
             </div>
 
             {/* Custom Modal to show the map */}
-            {modalOpen && (
+            {modalOpen && isClient && customMarkerIcon && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                     <div className="bg-white p-4 rounded-lg shadow-lg w-[80%] max-w-4xl relative">
                         <button
@@ -190,28 +205,25 @@ const CollectionHistory = () => {
                         >
                             &times;
                         </button>
-                        <h2 className="text-center text-xl font-semibold mb-4">Location View</h2>
-                        {selectedLocation && (
-                            <MapContainer
-                                center={[selectedLocation.latitude, selectedLocation.longitude]}
-                                zoom={13}
-                                style={{ height: "400px", width: "100%" }}
+                        <h2 className="text-center text-xl font-semibold mb-4">Location Details</h2>
+                        <MapContainer
+                            center={[selectedLocation.latitude, selectedLocation.longitude]}
+                            zoom={16}
+                            style={{ height: "400px", width: "100%" }}
+                        >
+                            <TileLayer
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+                            />
+                            <Marker
+                                position={[selectedLocation.latitude, selectedLocation.longitude]}
+                                icon={customMarkerIcon}
                             >
-                                <TileLayer
-                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                                />
-                                <Marker
-                                    position={[selectedLocation.latitude, selectedLocation.longitude]}
-                                    icon={customMarker}
-                                >
-                                    <Popup>
-                                        Latitude: {selectedLocation.latitude} <br />
-                                        Longitude: {selectedLocation.longitude}
-                                    </Popup>
-                                </Marker>
-                            </MapContainer>
-                        )}
+                                <Popup>
+                                    <p>Location: {selectedLocation.latitude}, {selectedLocation.longitude}</p>
+                                </Popup>
+                            </Marker>
+                        </MapContainer>
                     </div>
                 </div>
             )}

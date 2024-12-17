@@ -1,149 +1,121 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import dynamic from "next/dynamic";
 import axios from "axios";
 
-const AddressConfig = ({ onBackClick2 }) => {
-    const [address, setAddress] = useState("");
-    const [contactNumber, setContactNumber] = useState("");
-    const [email, setEmail] = useState("");
-    const [error, setError] = useState("");
-    const [showModal, setShowModal] = useState(false);
-    const [accountDetails, setAccountDetails] = useState({});
+// Dynamically import Leaflet to prevent SSR issues
+const MapView = () => {
+    const [isClient, setIsClient] = useState(false);
+    const [flagData, setFlagData] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const mapRef = useRef(null); // Ref to hold the map instance
+    const [currentLocation, setCurrentLocation] = useState({ latitude: null, longitude: null });
 
     useEffect(() => {
-        const fetchRoutes = async () => {
-            try {
-                const response = await axios.get("http://localhost:8000/API/Route/getAll");
-                setRoutes(response.data);
-            } catch (error) {
-                setError("Failed to fetch routes. Please try again later.");
-            }
-        };
-
-        fetchRoutes();
-
-        const storedAccountDetails = JSON.parse(localStorage.getItem("accountDetails"));
-        if (storedAccountDetails) {
-            setAccountDetails(storedAccountDetails);
-            setEmail(storedAccountDetails.username);
-        }
+        setIsClient(typeof window !== "undefined");
     }, []);
 
-    const handleFinishClick = async () => {
-        if (!address || !contactNumber || !email) {
-            setError("Please fill in all fields.");
-            return;
-        }
-        setError("");
-
-        const userData = {
-            firstname: accountDetails.firstname,
-            lastname: accountDetails.lastname,
-            address,
-            contactNumber,
-            username: accountDetails.username,
-            email,
-            password: accountDetails.password,
-            role: "resident",
-        };
-
-        localStorage.setItem("userData", JSON.stringify(userData));
-
+    const fetchFlagData = async () => {
         try {
-            const response = await axios.post("http://localhost:8000/API/register", userData);
-            setShowModal(true);
+            const response = await axios.get("http://localhost:8000/API/flag/getAll");
+            console.log("API Response:", response.data);
+            setFlagData(response.data);
         } catch (error) {
-            setError("Registration failed. Please try again.");
+            console.error("Error fetching flag data:", error);
         }
     };
 
+    useEffect(() => {
+        fetchFlagData();
+        const intervalId = setInterval(() => {
+            fetchFlagData();
+        }, 5000);
+        return () => clearInterval(intervalId);
+    }, []);
+
+    // Update current location every second
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        setCurrentLocation({ latitude: lat, longitude: lon });
+                        console.log("Updated Latitude:", lat);
+                        console.log("Updated Longitude:", lon);
+                    },
+                    (error) => {
+                        console.error("Error getting location:", error);
+                    },
+                    { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
+                );
+            }
+        }, 1000);
+
+        return () => clearInterval(intervalId);
+    }, []);
+
+    // Initialize map only when map is visible and the container exists
+    useEffect(() => {
+        if (!isClient || !currentLocation.latitude || !currentLocation.longitude) return;
+
+        const L = require("leaflet");
+        require("leaflet/dist/leaflet.css");
+
+        if (mapRef.current && !mapRef.current._leaflet_id) {
+            const map = L.map(mapRef.current).setView([currentLocation.latitude, currentLocation.longitude], 15);
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                attribution: "&copy; OpenStreetMap contributors",
+            }).addTo(map);
+
+            // Marker for the user's current location
+            const userIcon = new L.Icon({
+                iconUrl: "https://cdn-icons-png.flaticon.com/512/1077/1077114.png", // User icon URL
+                iconSize: [35, 35],
+                iconAnchor: [17.5, 35],
+                popupAnchor: [0, -35],
+            });
+
+            L.marker([currentLocation.latitude, currentLocation.longitude], { icon: userIcon })
+                .addTo(map)
+                .bindTooltip("You", { permanent: true, offset: [0, -15] })
+                .openTooltip();
+
+            // Marker for trucks
+            const truckIcon = new L.Icon({
+                iconUrl: "https://cdn-icons-png.flaticon.com/512/8692/8692601.png",
+                iconSize: [40, 40],
+                iconAnchor: [20, 40],
+                popupAnchor: [0, -40],
+            });
+
+            flagData.forEach((flag) => {
+                if (flag.flagStatus === "yes") {
+                    L.marker([flag.latitude, flag.longitude], { icon: truckIcon })
+                        .addTo(map)
+                        .bindTooltip(`${flag.userName}`, { permanent: true, offset: [0, -15] })
+                        .openTooltip();
+                }
+            });
+
+            mapRef.current = map; // Store the map instance for future use
+        }
+    }, [isClient, flagData, currentLocation]);
+
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 p-6">
-            <div className="w-full max-w-lg bg-white shadow-2xl rounded-2xl p-8 transition-transform transform hover:scale-105 duration-300">
-                <p className="text-3xl font-bold text-gray-800 mb-6 text-center">Address Configuration</p>
-                <form className="space-y-4">
-                    <div className="flex flex-col space-y-2">
-                        <label className="font-semibold text-gray-700" htmlFor="address">
-                            Address
-                        </label>
-                        <input
-                            id="address"
-                            type="text"
-                            value={address}
-                            onChange={(e) => setAddress(e.target.value)}
-                            className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                            placeholder="Enter your address"
-                        />
-                    </div>
-
-                    <div className="flex flex-col space-y-2">
-                        <label className="font-semibold text-gray-700" htmlFor="contactNumber">
-                            Contact Number
-                        </label>
-                        <input
-                            id="contactNumber"
-                            type="text"
-                            value={contactNumber}
-                            onChange={(e) => setContactNumber(e.target.value)}
-                            className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                            placeholder="Enter contact number"
-                        />
-                    </div>
-
-                    <div className="flex flex-col space-y-2">
-                        <label className="font-semibold text-gray-700" htmlFor="email">
-                            Email
-                        </label>
-                        <input
-                            id="email"
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                            placeholder="Enter your email"
-                        />
-                    </div>
-
-                    {error && <p className="text-red-500 font-semibold">{error}</p>}
-
-                    <div className="flex flex-col sm:flex-row justify-between mt-8 space-y-4 sm:space-y-0">
-                        <button
-                            type="button"
-                            onClick={onBackClick2}
-                            className="bg-gray-300 text-gray-800 font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-gray-400 transition-colors duration-200 w-full sm:w-auto"
-                        >
-                            Back
-                        </button>
-                        <button
-                            type="button"
-                            className="bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 w-full sm:w-auto"
-                            onClick={handleFinishClick}
-                        >
-                            Finish
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            {showModal && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-2xl max-w-sm text-center">
-                        <h3 className="text-xl font-semibold text-gray-800 mb-4">Success!</h3>
-                        <p className="text-gray-600 mb-6">Your address configuration is complete.</p>
-                        <div className="flex justify-center">
-                            <a href="/sign_in_page">
-                                <button
-                                    onClick={() => setShowModal(false)}
-                                    className="bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-200"
-                                >
-                                    Close
-                                </button>
-                            </a>
-                        </div>
+        <div className="container mx-auto mt-4">
+            {loading && (
+                <div className="flex justify-center items-center h-40">
+                    <div className="spinner-container">
+                        <div className="spinner"></div>
+                        <p className="ml-4 text-lg text-gray-600">Loading...</p>
                     </div>
                 </div>
             )}
+
+            <div id="map" style={{ height: "500px" }} ref={mapRef}></div>
         </div>
     );
 };
 
-export default AddressConfig;
+export default dynamic(() => Promise.resolve(MapView), { ssr: false });

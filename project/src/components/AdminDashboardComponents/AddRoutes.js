@@ -107,7 +107,7 @@ const DashboardCollectionRoutes = () => {
     return (
         <div className="dashboard-collection-routes font-sans">
             <header className="text-center mb-6">
-                <h1 className="text-3xl font-bold text-[#2E8ECA]">Lists of Routes</h1>
+                <h1 className="text-3xl font-bold text-[#000000]">Lists of Routes</h1>
                 {feedbackMessage && (
                     <p className="text-green-600 mt-2">{feedbackMessage}</p>
                 )}
@@ -116,7 +116,7 @@ const DashboardCollectionRoutes = () => {
                 <div className="flex justify-end mb-5">
                     <button
                         onClick={() => setIsAddModalOpen(true)}
-                        className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all"
+                        className="flex items-center bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-all"
                         aria-label="Add New Route"
                     >
                         <AddIcon />
@@ -170,7 +170,7 @@ const DashboardCollectionRoutes = () => {
                                             <button
                                                 onClick={() => setDropdownOpen(dropdownOpen === route.routesID ? null : route.routesID)}
                                                 className="text-gray-600 hover:text-gray-800 text-xl"
-                                                aria-label="Options"
+                                                aria-label="Options"    
                                             >
                                                 ...
                                             </button>
@@ -178,10 +178,10 @@ const DashboardCollectionRoutes = () => {
                                                 <div className="absolute right-0 mt-2 bg-white shadow-md rounded-md border border-gray-200 z-10">
                                                     <button
                                                         onClick={() => handleEditToggle(route)}
-                                                        className="block text-blue-500 px-4 py-2"
+                                                        className="block px-4 py-2"
                                                         aria-label="Edit Route"
                                                     >
-                                                        <PenIcon /> Edit
+                                                         Edit
                                                     </button>
                                                     <button
                                                         onClick={() => {
@@ -189,10 +189,10 @@ const DashboardCollectionRoutes = () => {
                                                             setIsDeleteModalOpen(true);
                                                             setDropdownOpen(null);
                                                         }}
-                                                        className="block text-red-500 px-4 py-2"
+                                                        className="block px-4 py-2"
                                                         aria-label="Delete Route"
                                                     >
-                                                        <TrashIcon /> Delete
+                                                        Delete
                                                     </button>
                                                 </div>
                                             )}
@@ -207,43 +207,49 @@ const DashboardCollectionRoutes = () => {
             <CollectionHistory />
 
             {/* Modal for Adding New Route */}
-            {isAddModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-                        <h2 className="text-xl font-semibold mb-4">Add New Route</h2>
-                        <input
-                            type="text"
-                            value={newRoute}
-                            onChange={(e) => setNewRoute(e.target.value)}
-                            placeholder="Route Name"
-                            className="border p-2 mb-4 w-full rounded"
-                        />
-                        <input
-                            type="text"
-                            value={newCoveredPlaces}
-                            onChange={(e) => setNewCoveredPlaces(e.target.value)}
-                            placeholder="Covered Places"
-                            className="border p-2 mb-4 w-full rounded"
-                        />
-                        <div className="flex justify-end">
-                            <button
-                                onClick={handleAddRoute}
-                                className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
-                                aria-label="Add Route"
-                            >
-                                Add
-                            </button>
-                            <button
-                                onClick={() => setIsAddModalOpen(false)}
-                                className="bg-gray-300 text-black px-4 py-2 rounded"
-                                aria-label="Close Modal"
-                            >
-                                Close
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+{isAddModalOpen && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div
+      className="bg-light-green p-8 rounded-xl shadow-2xl border-t-4 border-green-700 w-4/5 sm:w-96"
+      style={{ backgroundColor: "#f0fdf4" }}
+    >
+      <h2 className="text-2xl font-bold mb-6 text-green-800 text-center">
+        Add New Route
+      </h2>
+      <input
+        type="text"
+        value={newRoute}
+        onChange={(e) => setNewRoute(e.target.value)}
+        placeholder="Route Name"
+        className="w-full border-2 border-green-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 mb-4"
+      />
+      <input
+        type="text"
+        value={newCoveredPlaces}
+        onChange={(e) => setNewCoveredPlaces(e.target.value)}
+        placeholder="Covered Places"
+        className="w-full border-2 border-green-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 mb-6"
+      />
+      <div className="flex justify-end space-x-4">
+        <button
+          onClick={handleAddRoute}
+          className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
+          aria-label="Add Route"
+        >
+          Add
+        </button>
+        <button
+          onClick={() => setIsAddModalOpen(false)}
+          className="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 transition"
+          aria-label="Close Modal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
 
             {/* Modal for Deleting Route */}
             {isDeleteModalOpen && (

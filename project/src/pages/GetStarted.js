@@ -91,14 +91,14 @@ const GetStarted = () => {
                                 onClick={() => setActiveSection("setupAccount")}
                             >
                                 <Image src="/images/account.png" alt="Setup Your Account" width={37} height={37} className="mr-2 ml-3" />
-                                {!isCollapsed && <span className="text-lg font-open-sans">Setup Your Account</span>}
+                                {!isCollapsed && <span className="text-lg font-open-sans">Announcement</span>}
                             </li>
                             <li
                                 className={`flex items-center cursor-pointer p-2 rounded-md transition-colors ${activeSection === "addressConfig" ? "bg-gray-700" : "hover:bg-gray-700"}`}
                                 onClick={() => setActiveSection("addressConfig")}
                             >
                                 <Image src="/images/location.png" alt="Address Configuration" width={37} height={37} className="mr-2 ml-3" />
-                                {!isCollapsed && <span className="text-lg font-open-sans">Address Configuration</span>}
+                                {!isCollapsed && <span className="text-lg font-open-sans">Track Location</span>}
                             </li>
                         </ul>
                     </div>

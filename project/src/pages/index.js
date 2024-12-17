@@ -1,14 +1,13 @@
 import HomePageContent from "@/components/HomePageContent";
 import Navbar from "@/components/Navbar";
 import About from "./about";
-import Contact from "./contact";
 import Footer from "@/components/Footer";
 
 export default function Home() {
     return (
         <div className="relative min-h-screen overflow-hidden bg-gradient-to-r from-[#2E8ECA] to-white">
             {/* Navbar with background color */}
-            <Navbar homeTitle="Home" aboutTitle="About" contactTitle="Contact" className="bg-[#4BAA6C] text-white shadow-md" />
+            <Navbar homeTitle="Home" aboutTitle="About"  className="bg-[#4BAA6C] text-white shadow-md" />
 
             {/* Main Content */}
             <main className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
@@ -26,16 +25,7 @@ export default function Home() {
                     </section>
                 </div>
 
-                {/* Contact Section */}
-                <div className="flex justify-center">
-                    <section
-                        id="contact"
-                        className="w-full sm:w-[80rem] mt-24 py-12 px-6 md:px-12 rounded-lg bg-white shadow-lg"
-                        data-aos="fade-right"
-                    >
-                        <Contact />
-                    </section>
-                </div>
+                
             </main>
 
             {/* Footer */}
